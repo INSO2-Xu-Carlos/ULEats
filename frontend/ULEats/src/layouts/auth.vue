@@ -1,6 +1,5 @@
 <template>
   <v-app>
-    <v-app-bar app>ULEats</v-app-bar>
     <v-main>
       <slot />
     </v-main>
@@ -8,5 +7,5 @@
 </template>
 
 <script setup lang="ts">
-//
+// Auth layout sin barra superior
 </script>

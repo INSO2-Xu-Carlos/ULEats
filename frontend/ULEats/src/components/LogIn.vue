@@ -11,8 +11,18 @@
 <script lang="ts" setup>
     const username = "Username"
     const password = "Password"
+    const error = ref('')
 
     let username_value = ""
     let password_value = ""
+
+    const handleSubmit = () =>{
+      if(!username_value || !password_value) {
+          error.value = "All fields are required "
+      }
+    }
+      if(!username.value || !password_value) =>{
+
+    }
 
 </script>
