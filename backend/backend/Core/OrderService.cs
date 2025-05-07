@@ -1,6 +1,13 @@
-﻿namespace backend.Core
+﻿using backend.Model;
+namespace backend.Core
 {
-    public class ClientService
+    public class OrderService
     {
+        
+        public OrderItem GetOrderItemById(int id)
+        {
+            
+            return null;
+        }
     }
 }

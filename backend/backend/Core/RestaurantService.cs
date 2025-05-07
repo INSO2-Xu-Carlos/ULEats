@@ -1,6 +1,6 @@
 ﻿namespace backend.Core
 {
-    public class ClientService
+    public class RestaurantService
     {
     }
 }
