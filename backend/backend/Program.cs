@@ -1,6 +1,13 @@
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddScoped<AppDataConnection>(sp =>
+{
+    var config = sp.GetRequiredService<IConfiguration>();
+    return new AppDataConnection(config.GetConnectionString("Connection"));
+
+});
+
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
