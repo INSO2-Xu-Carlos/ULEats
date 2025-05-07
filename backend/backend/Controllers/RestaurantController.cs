@@ -4,7 +4,7 @@ namespace backend.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class ClientController : ControllerBase
+    public class RestaurantController : ControllerBase
     {
         private static readonly string[] Summaries = new[]
         {
@@ -13,7 +13,7 @@ namespace backend.Controllers
 
         private readonly ILogger<ClientController> _logger;
 
-        public ClientController(ILogger<ClientController> logger)
+        public RestaurantController(ILogger<ClientController> logger)
         {
             _logger = logger;
         }
