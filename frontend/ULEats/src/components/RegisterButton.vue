@@ -9,6 +9,7 @@ export default {
   methods: {
     register() {
       // Logic for registration goes here
+      this.$router.push("/register");
       console.log('Register init');
     }
   }

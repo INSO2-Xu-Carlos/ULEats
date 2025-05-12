@@ -1,22 +1,23 @@
 <template>
-  <button @click="handleLogin">Log In</button>
+  <button @click="goToLogin">Log In</button>
 </template>
 
 <script>
 export default {
+  name: "LoginButton",
   methods: {
-    handleLogin() {
-      // Aquí puedes manejar la lógica de inicio de sesión
-      console.log("Login sucessfull");
-    }
-  }
-}
+    goToLogin() {
+      this.$router.push("/login");
+      console.log('Log In');
+    },
+  },
+};
 </script>
 
 <style scoped>
 button {
   padding: 10px 20px;
-  margin: 10px;
   font-size: 16px;
+  cursor: pointer;
 }
 </style>
