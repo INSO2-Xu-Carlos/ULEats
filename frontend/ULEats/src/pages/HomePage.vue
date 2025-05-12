@@ -1,12 +1,6 @@
 <template>
   <div class="home-page">
-    <h1>Welcome to ULEats</h1>
-    <router-link to="/login">
-      <button>Log In</button>
-    </router-link>
-    <router-link to="/register">
-      <button>Register</button>
-    </router-link>
+    
   </div>
 </template>
 

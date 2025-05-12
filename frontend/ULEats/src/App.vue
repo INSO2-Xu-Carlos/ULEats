@@ -1,9 +1,12 @@
 <template>
-  <div id="app">
-    <h1>ULEats</h1>
-    <LoginButton @click="goToLogin" />
-    <RegisterButton @click="goToRegister" />
-  </div>
+  <v-app>
+    <div id="app">
+      <h1>ULEats</h1>
+      <LoginButton @click="goToLogin" />
+      <RegisterButton @click="goToRegister" />
+      <router-view />
+    </div>
+  </v-app>
 </template>
 
 <script>
