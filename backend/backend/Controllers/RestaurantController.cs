@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
+using backend.Core;
+using Microsoft.AspNetCore.Identity.Data;
 
 namespace backend.Controllers
 {
@@ -6,28 +8,51 @@ namespace backend.Controllers
     [Route("[controller]")]
     public class RestaurantController : ControllerBase
     {
-        private static readonly string[] Summaries = new[]
-        {
-            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-        };
 
-        private readonly ILogger<ClientController> _logger;
-
-        public RestaurantController(ILogger<ClientController> logger)
+        private readonly ClientService _clientService;
+        private readonly RestaurantController _restController;
+        public RestaurantController(ClientService clientService, RestaurantController restController)
         {
-            _logger = logger;
+            _clientService = clientService;
+            _restController = restController;
         }
 
-        [HttpGet(Name = "GetWeatherForecast")]
-        public IEnumerable<WeatherForecast> Get()
+        [HttpPost("create")]
+        public IActionResult CreateRestaurant([FromBody] CreateRestaurantRequest request)
         {
-            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
+            var user = _clientService.getUserById(request.UserId);
+
+
+            if (user == null)
             {
-                Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-                TemperatureC = Random.Shared.Next(-20, 55),
-                Summary = Summaries[Random.Shared.Next(Summaries.Length)]
-            })
-            .ToArray();
+                return NotFound("User not found");
+            }
+
+            if(user.UserType.ToLower() != "restaurant")
+            {
+                return Unauthorized("Only users with rol 'restaurant' can create a new restaurant");
+            }
+
+            var newRestaurant = _restController.(
+                request.Name,
+                request.Address,
+                request.Phone,
+                request.UserId,
+                request.Description,
+                request.Logo_url
+                );
+
+            return Ok("There is a new restaurant in town!");
+        }
+
+        public class CreateRestaurantRequest
+        {
+            public string Name { get; set; }
+            public string Address {  get; set; }
+            public string Phone { get; set; }
+            public int UserId { get; set; }
+            public string Description { get; set; }
+            public string Logo_url { get; set; }
         }
     }
 }
