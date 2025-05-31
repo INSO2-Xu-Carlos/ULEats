@@ -12,16 +12,16 @@ import HomePage from "@/pages/HomePage.vue";
 import LoginPage from "@/pages/LoginPage.vue";
 import RegisterPage from "@/pages/RegisterPage.vue";
 import ClientPage from '@/pages/ClientPage.vue';
-//import RestaurantPage from '@/pages/RestaurantPage.vue';
-//import DeliveryPage from '@/pages/DeliveryPage.vue';
+import RestaurantPage from '@/pages/RestaurantPage.vue';
+import DeliveryPage from '@/pages/DeliveryPage.vue';
 
 const routes = [
   { path: '/', component: HomePage },
   { path: "/login", component: LoginPage },
   { path: "/register", component: RegisterPage },
   { path: "/client", component: ClientPage },
-  //{ path: "/restaurant", component: RestaurantPage },
-  //{ path: "/delivery", component: DeliveryPage },
+  { path: "/restaurant", component: RestaurantPage },
+  { path: "/delivery", component: DeliveryPage },
 ];
 
 const router = createRouter({

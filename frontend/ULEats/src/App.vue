@@ -12,11 +12,13 @@
 <script>
 import LoginButton from './components/LoginButton.vue';
 import RegisterButton from './components/RegisterButton.vue';
+import AppFooter from '@/components/AppFooter.vue';
 
 export default {
   components: {
     LoginButton,
     RegisterButton,
+    AppFooter
   },
   methods: {
     goToLogin() {

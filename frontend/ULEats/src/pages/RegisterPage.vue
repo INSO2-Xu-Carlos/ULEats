@@ -1,7 +1,7 @@
 <template>
   <div class="register-page">
     <h1>Register</h1>
-    <form @submit.prevent="handleRegister">
+    <form @submit.prevent="registerUser">
       <div class="form-group">
         <label for="firstname">First Name:</label>
         <input type="text" id="firstname" v-model="firstname" required />
@@ -27,32 +27,32 @@
         <div>
           <input
             type="radio"
-            id="client"
-            value="client"
-            v-model="userType"
+            id="customer"
+            value="customer"
+            name="userType"
             required
           />
-          <label for="client">Client</label>
+          <label for="customer">Client</label>
         </div>
         <div>
           <input
             type="radio"
-            id="resstaurant"
+            id="restaurant"
             value="restaurant"
-            v-model="userType"
+            name="userType"
             required
           />
-          <label for="restaurante">Restaurant</label>
+          <label for="restaurant">Restaurant</label>
         </div>
         <div>
           <input
             type="radio"
             id="delivery"
             value="delivery"
-            v-model="userType"
+            name="userType"
             required
           />
-          <label for="restaurante">Delivey</label>
+          <label for="delivery">Delivey</label>
         </div>
       </div>
       <button type="submit">Register</button>
@@ -70,22 +70,40 @@ export default {
       email: "",
       password: "",
       phonenumber: "",
-      userType: "", // Campo adicional para el tipo de usuario
+      userType: "",
     };
   },
   methods: {
-    handleRegister() {
-      console.log("Registration data:", {
-        firstname: this.firstname,
-        lastname: this.lastname,
-        email: this.email,
-        password: this.password,
-        phonenumber: this.phonenumber,
-        userType: this.userType,
-      });
-      alert(
-        `Registro exitoso como ${this.userType === "cliente" ? "Cliente" : "Restaurante Delivery"} (simulado)`
-      );
+    async registerUser() {
+      const payload = {
+        FirstName: this.firstname,
+        LastName: this.lastname,
+        Email: this.email,
+        Password: this.password,
+        Phone: this.phonenumber,
+        UserType: this.userType,
+      };
+
+      try {
+        const response = await fetch("/api/Client/register", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
+        });
+
+        if (!response.ok) {
+          const errorText = await response.text();
+          alert("Error: " + errorText);
+          return;
+        }
+
+        alert("¡Registro exitoso!");
+        this.$router.push('/login');
+      } catch (error) {
+        alert("Error de red: " + error);
+      }
     },
   },
 };

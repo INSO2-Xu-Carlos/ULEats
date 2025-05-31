@@ -68,8 +68,17 @@ export default defineConfig({
       '.vue',
     ],
   },
-  server: {
+    server: {
     port: 3000,
+    proxy: {
+      '/api': {
+        target: 'https://localhost:44311',
+        changeOrigin: true,
+        secure: false,
+        // Opcional: reescribe /api a la raíz del backend
+        rewrite: (path) => path.replace(/^\/api/, ''),
+      },
+    },
   },
   css: {
     preprocessorOptions: {
