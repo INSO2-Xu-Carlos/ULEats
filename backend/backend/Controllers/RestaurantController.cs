@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using backend.Core;
 using Microsoft.AspNetCore.Identity.Data;
+using DataModel;
 
 namespace backend.Controllers
 {
@@ -9,12 +10,11 @@ namespace backend.Controllers
     public class RestaurantController : ControllerBase
     {
 
-        private readonly ClientService _clientService;
-        private readonly RestaurantController _restController;
-        public RestaurantController(ClientService clientService, RestaurantController restController)
+        private ClientService _clientService;
+
+        public RestaurantController(ClientService clientService)
         {
             _clientService = clientService;
-            _restController = restController;
         }
 
         [HttpPost("create")]
@@ -28,19 +28,20 @@ namespace backend.Controllers
                 return NotFound("User not found");
             }
 
-            if(user.UserType.ToLower() != "restaurant")
+            if (user.UserType.ToLower() != "restaurant")
             {
                 return Unauthorized("Only users with rol 'restaurant' can create a new restaurant");
             }
 
-            var newRestaurant = _restController.(
-                request.Name,
-                request.Address,
-                request.Phone,
-                request.UserId,
-                request.Description,
-                request.Logo_url
-                );
+            var newRestaurant = new Restaurant()
+            {
+                Name = request.Name,
+                Address = request.Address,
+                Phone = request.Phone,
+                UserId = request.UserId,
+                Description = request.Description,
+                LogoUrl = request.Logo_url
+            };
 
             return Ok("There is a new restaurant in town!");
         }

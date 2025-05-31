@@ -13,8 +13,6 @@ namespace backend.Controllers
         {
             _logger = logger;
         }
-
-        [HttpGet(Name = "GetWeatherForecast")]
         
     }
 }
