@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using backend.Core;
 using DataModel;
+using backend.Model;
 
 namespace backend.Controllers
 {
@@ -17,12 +18,16 @@ namespace backend.Controllers
 
         // POST: /Delivery
         [HttpPost]
-        public IActionResult Create([FromBody] Delivery delivery)
+        public IActionResult AddDelivery([FromBody] DeliveryCreateDTO dto)
         {
-            var created = _deliveryService.CreateDelivery(delivery);
-            if (created == null)
-                return BadRequest("Bad Request. We couldnt create a delivery");
-            return Ok(created);
+            if (dto == null)
+                return BadRequest("Datos de entrega inválidos.");
+
+            var result = _deliveryService.AddDelivery(dto);
+            if (result == null)
+                return StatusCode(500, "Error al insertar la entrega.");
+
+            return Ok(result);
         }
 
         // GET: /Delivery/{id}

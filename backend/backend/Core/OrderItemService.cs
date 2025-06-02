@@ -1,4 +1,5 @@
-﻿using DataModel;
+﻿using backend.Model;
+using DataModel;
 using LinqToDB;
 
 namespace backend.Core
@@ -13,8 +14,16 @@ namespace backend.Core
         }
 
         // Crear un nuevo OrderItem
-        public OrderItem? AddOrderItem(OrderItem orderItem)
+        public OrderItem? AddOrderItem(OrderItemCreateDto dto)
         {
+            var orderItem = new OrderItem
+            {
+                OrderId = dto.OrderId,
+                ProductId = dto.ProductId,
+                Quantity = dto.Quantity,
+                UnitPrice = dto.UnitPrice
+            };
+
             var id = _context.InsertWithInt32Identity(orderItem);
             if (id > 0)
             {

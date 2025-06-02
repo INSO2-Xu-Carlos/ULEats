@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using backend.Core;
 using DataModel;
+using backend.Model;
 
 namespace backend.Controllers
 {
@@ -17,12 +18,16 @@ namespace backend.Controllers
 
         // POST: /Order
         [HttpPost]
-        public IActionResult Create([FromBody] Order order)
+        public IActionResult AddOrder([FromBody] OrderCreateDTO dto)
         {
-            var created = _orderService.CreateOrder(order);
-            if (created == null)
-                return BadRequest("Bad Request. We couldnt create a order");
-            return Ok(created);
+            if (dto == null)
+                return BadRequest("Orden inválida.");
+
+            var result = _orderService.AddOrder(dto);
+            if (result == null)
+                return StatusCode(500, "Error al insertar la orden.");
+
+            return Ok(result);
         }
 
         // GET: /Order/{id}

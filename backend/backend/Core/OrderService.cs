@@ -1,4 +1,5 @@
-﻿using DataModel;
+﻿using backend.Model;
+using DataModel;
 using LinqToDB;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,33 @@ namespace backend.Core
         public OrderService(UlEatsDb context)
         {
             _context = context;
+        }
+
+        public Order? AddOrder(OrderCreateDTO dto)
+        {
+            var order = new Order
+            {
+                CustomerId = dto.CustomerId,
+                RestaurantId = dto.RestaurantId,
+                DeliveryId = dto.DeliveryId,
+                OrderDate = dto.OrderDate,
+                Status = dto.Status,
+                DeliveryAddress = dto.DeliveryAddress,
+                Subtotal = dto.Subtotal,
+                DeliveryFee = dto.DeliveryFee,
+                TotalAmount = dto.TotalAmount,
+                EstimatedDeliveryTime = dto.EstimatedDeliveryTime,
+                ActualDeliveyTime = dto.ActualDeliveyTime,
+                SpecialInstructions = dto.SpecialInstructions
+            };
+
+            var id = _context.InsertWithInt32Identity(order);
+            if (id > 0)
+            {
+                order.OrderId = id;
+                return order;
+            }
+            return null;
         }
 
         public Order? GetOrderById(int id)

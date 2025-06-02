@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using backend.Core;
 using DataModel;
+using backend.Model;
 
 namespace backend.Controllers
 {
@@ -17,12 +18,12 @@ namespace backend.Controllers
 
         // POST /OrderTracking
         [HttpPost]
-        public IActionResult AddOrderTracking([FromBody] OrderTracking tracking)
+        public IActionResult AddOrderTracking([FromBody] OrderTrackingCreateDto dto)
         {
-            if (tracking == null)
+            if (dto == null)
                 return BadRequest("Tracking inválido.");
 
-            var result = _orderTrackingService.AddOrderTracking(tracking);
+            var result = _orderTrackingService.AddOrderTracking(dto);
             if (result == null)
                 return StatusCode(500, "Error al insertar el tracking.");
 

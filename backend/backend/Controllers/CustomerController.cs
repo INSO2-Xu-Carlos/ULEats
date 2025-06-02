@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using backend.Core;
 using DataModel;
+using backend.Model;
 
 namespace backend.Controllers
 {
@@ -17,12 +18,12 @@ namespace backend.Controllers
 
         // POST /Customer
         [HttpPost]
-        public IActionResult AddCustomer([FromBody] Customer customer)
+        public IActionResult AddCustomer([FromBody] CustomerCreateDTO dto)
         {
-            if (customer == null)
+            if (dto == null)
                 return BadRequest("Cliente inválido.");
 
-            var result = _customerService.AddCustomer(customer);
+            var result = _customerService.AddCustomer(dto);
             if (result == null)
                 return StatusCode(500, "Error al insertar el cliente.");
 

@@ -1,4 +1,5 @@
-﻿using DataModel;
+﻿using backend.Model;
+using DataModel;
 using LinqToDB;
 using System.Linq;
 
@@ -11,6 +12,25 @@ namespace backend.Core
         public DeliveryService(UlEatsDb context)
         {
             _context = context;
+        }
+
+        public Delivery? AddDelivery(DeliveryCreateDTO dto)
+        {
+            var delivery = new Delivery
+            {
+                UserId = dto.UserId,
+                VehiclePlate = dto.VehiclePlate,
+                Phone = dto.Phone,
+                VehicleType = dto.VehicleType
+            };
+
+            var id = _context.InsertWithInt32Identity(delivery);
+            if (id > 0)
+            {
+                delivery.DeliveryId = id;
+                return delivery;
+            }
+            return null;
         }
 
         public Delivery? GetDeliveryById(int id)

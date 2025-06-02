@@ -1,4 +1,5 @@
-﻿using DataModel;
+﻿using backend.Model;
+using DataModel;
 using LinqToDB;
 namespace backend.Core
 {
@@ -11,8 +12,14 @@ namespace backend.Core
             _context = context;
         }
 
-        public Customer? AddCustomer(Customer customer)
+        public Customer? AddCustomer(CustomerCreateDTO dto)
         {
+            var customer = new Customer
+            {
+                Address = dto.Address,
+                UserId = dto.UserId
+            };
+
             var id = _context.InsertWithInt32Identity(customer);
             if (id > 0)
             {
@@ -21,7 +28,6 @@ namespace backend.Core
             }
             return null;
         }
-
         public Customer? GetCustomerById(int customerId)
         {
             return _context.Customers.FirstOrDefault(c => c.CustomerId == customerId);

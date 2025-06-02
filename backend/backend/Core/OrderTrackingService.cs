@@ -1,4 +1,5 @@
-﻿using DataModel;
+﻿using backend.Model;
+using DataModel;
 using LinqToDB;
 
 namespace backend.Core
@@ -13,8 +14,17 @@ namespace backend.Core
         }
 
         // Crear un nuevo tracking
-        public OrderTracking? AddOrderTracking(OrderTracking tracking)
+        public OrderTracking? AddOrderTracking(OrderTrackingCreateDto dto)
         {
+            var tracking = new OrderTracking
+            {
+                OrderId = dto.OrderId,
+                Status = dto.Status,
+                ChangedAt = dto.ChangedAt,
+                ChangedBy = dto.ChangedBy,
+                Notes = dto.Notes
+            };
+
             var id = _context.InsertWithInt32Identity(tracking);
             if (id > 0)
             {
