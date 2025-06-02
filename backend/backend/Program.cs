@@ -21,7 +21,7 @@ builder.Services.AddScoped<UlEatsDb>(sp =>
     var config = sp.GetRequiredService<IConfiguration>();
     var connStr = config.GetConnectionString("Connection");
     if (string.IsNullOrEmpty(connStr))
-        throw new InvalidOperationException("La cadena de conexión 'Connection' no está definida en la configuración.");
+        throw new InvalidOperationException("La cadena de conexiï¿½n 'Connection' no estï¿½ definida en la configuraciï¿½n.");
     var baseOptions = new DataOptions().UsePostgreSQL(connStr);
     var options = new DataOptions<UlEatsDb>(baseOptions);
     return new UlEatsDb(options);

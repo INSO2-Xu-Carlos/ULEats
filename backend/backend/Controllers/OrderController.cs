@@ -1,18 +1,66 @@
 using Microsoft.AspNetCore.Mvc;
+using backend.Core;
+using DataModel;
 
 namespace backend.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class OrdertController : ControllerBase
+    public class OrderController : ControllerBase
     {
+        private readonly OrderService _orderService;
 
-        private readonly ILogger<ClientController> _logger;
-
-        public OrdertController(ILogger<ClientController> logger)
+        public OrderController(OrderService orderService)
         {
-            _logger = logger;
+            _orderService = orderService;
         }
-        
+
+        // POST: /Order
+        [HttpPost]
+        public IActionResult Create([FromBody] Order order)
+        {
+            var created = _orderService.CreateOrder(order);
+            if (created == null)
+                return BadRequest("Bad Request. We couldnt create a order");
+            return Ok(created);
+        }
+
+        // GET: /Order/{id}
+        [HttpGet("{id}")]
+        public IActionResult Get(int id)
+        {
+            var order = _orderService.GetOrderById(id);
+            if (order == null)
+                return NotFound();
+            return Ok(order);
+        }
+
+        // GET: /Order
+        [HttpGet]
+        public IActionResult GetAll()
+        {
+            var orders = _orderService.GetAllOrders();
+            return Ok(orders);
+        }
+
+        // PUT: /Order/{id}
+        [HttpPut("{id}")]
+        public IActionResult Update(int id, [FromBody] Order order)
+        {
+            var updated = _orderService.UpdateOrder(id, order);
+            if (!updated)
+                return BadRequest("Bad request. Order failed to update");
+            return Ok("Order updated succesfully");
+        }
+
+        // DELETE: /Order/{id}
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+            var deleted = _orderService.DeleteOrder(id);
+            if (!deleted)
+                return NotFound();
+            return Ok("Order deleted succesfully");
+        }
     }
 }

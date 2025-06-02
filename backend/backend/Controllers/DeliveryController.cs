@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
+using backend.Core;
+using DataModel;
 
 namespace backend.Controllers
 {
@@ -6,28 +8,59 @@ namespace backend.Controllers
     [Route("[controller]")]
     public class DeliveryController : ControllerBase
     {
-        private static readonly string[] Summaries = new[]
-        {
-            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-        };
+        private readonly DeliveryService _deliveryService;
 
-        private readonly ILogger<ClientController> _logger;
-
-        public DeliveryController(ILogger<ClientController> logger)
+        public DeliveryController(DeliveryService deliveryService)
         {
-            _logger = logger;
+            _deliveryService = deliveryService;
         }
 
-        [HttpGet(Name = "GetWeatherForecast")]
-        public IEnumerable<WeatherForecast> Get()
+        // POST: /Delivery
+        [HttpPost]
+        public IActionResult Create([FromBody] Delivery delivery)
         {
-            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
-            {
-                Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-                TemperatureC = Random.Shared.Next(-20, 55),
-                Summary = Summaries[Random.Shared.Next(Summaries.Length)]
-            })
-            .ToArray();
+            var created = _deliveryService.CreateDelivery(delivery);
+            if (created == null)
+                return BadRequest("Bad Request. We couldnt create a delivery");
+            return Ok(created);
+        }
+
+        // GET: /Delivery/{id}
+        [HttpGet("{id}")]
+        public IActionResult Get(int id)
+        {
+            var delivery = _deliveryService.GetDeliveryById(id);
+            if (delivery == null)
+                return NotFound();
+            return Ok(delivery);
+        }
+
+        // GET: /Delivery
+        [HttpGet]
+        public IActionResult GetAll()
+        {
+            var deliveries = _deliveryService.GetAllDeliveries();
+            return Ok(deliveries);
+        }
+
+        // PUT: /Delivery/{id}
+        [HttpPut("{id}")]
+        public IActionResult Update(int id, [FromBody] Delivery delivery)
+        {
+            var updated = _deliveryService.UpdateDelivery(id, delivery);
+            if (!updated)
+                return BadRequest("Bad request. Delivery failed to update");
+            return Ok("Delivery updated succesfully");
+        }
+
+        // DELETE: /Delivery/{id}
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+            var deleted = _deliveryService.DeleteDelivery(id);
+            if (!deleted)
+                return NotFound();
+            return Ok("Delivery deleted succesfully");
         }
     }
 }
