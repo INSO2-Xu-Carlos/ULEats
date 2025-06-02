@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using backend.Core;
 using DataModel;
+using backend.Model;
 
 namespace backend.Controllers
 {
@@ -15,60 +16,62 @@ namespace backend.Controllers
             _restaurantService = restaurantService;
         }
 
-        // POST: /Restaurant
+        // POST /Restaurant
         [HttpPost]
-        public IActionResult Create([FromBody] Restaurant restaurant)
+        public IActionResult AddRestaurant([FromBody] RestaurantCreateDto dto)
         {
-            var created = _restaurantService.CreateRestaurant(restaurant);
-            if (created == null)
-                return BadRequest("No se pudo crear el restaurante.");
-            return Ok(created);
+            if (dto == null)
+                return BadRequest("Restaurante inv�lido.");
+
+            var result = _restaurantService.AddRestaurant(dto);
+            if (result == null)
+                return StatusCode(500, "Error al insertar el restaurante.");
+
+            return Ok(result);
         }
 
-        // GET: /Restaurant/{id}
+        // GET /Restaurant/{id}
         [HttpGet("{id}")]
-        public IActionResult Get(int id)
+        public IActionResult GetRestaurantById(int id)
         {
             var restaurant = _restaurantService.GetRestaurantById(id);
             if (restaurant == null)
                 return NotFound();
+
             return Ok(restaurant);
         }
 
-        // GET: /Restaurant
+        // GET /Restaurant
         [HttpGet]
-        public IActionResult GetAll()
+        public IActionResult GetAllRestaurants()
         {
             var restaurants = _restaurantService.GetAllRestaurants();
             return Ok(restaurants);
         }
 
-        // GET: /Restaurant/ByUser/{userId}
-        [HttpGet("ByUser/{userId}")]
-        public IActionResult GetByUser(int userId)
-        {
-            var restaurants = _restaurantService.GetRestaurantsByUser(userId);
-            return Ok(restaurants);
-        }
-
-        // PUT: /Restaurant/{id}
+        // PUT /Restaurant/{id}
         [HttpPut("{id}")]
-        public IActionResult Update(int id, [FromBody] Restaurant restaurant)
+        public IActionResult UpdateRestaurant(int id, [FromBody] Restaurant restaurant)
         {
-            var updated = _restaurantService.UpdateRestaurant(id, restaurant);
+            if (restaurant == null || restaurant.RestaurantId != id)
+                return BadRequest("Datos de restaurante inv�lidos.");
+
+            var updated = _restaurantService.UpdateRestaurant(restaurant);
             if (!updated)
-                return BadRequest("No se pudo actualizar el restaurante.");
-            return Ok("Restaurante actualizado correctamente.");
+                return NotFound();
+
+            return NoContent();
         }
 
-        // DELETE: /Restaurant/{id}
+        // DELETE /Restaurant/{id}
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public IActionResult DeleteRestaurant(int id)
         {
             var deleted = _restaurantService.DeleteRestaurant(id);
             if (!deleted)
                 return NotFound();
-            return Ok("Restaurante eliminado correctamente.");
+
+            return NoContent();
         }
     }
 }
