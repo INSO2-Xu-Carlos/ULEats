@@ -1,7 +1,7 @@
-using Microsoft.AspNetCore.Mvc;
 using backend.Core;
-using DataModel;
 using backend.Model;
+using DataModel;
+using Microsoft.AspNetCore.Mvc;
 
 namespace backend.Controllers
 {
@@ -21,7 +21,7 @@ namespace backend.Controllers
         public IActionResult AddRestaurant([FromBody] RestaurantCreateDto dto)
         {
             if (dto == null)
-                return BadRequest("Restaurante invï¿½lido.");
+                return BadRequest("Restaurante inválido.");
 
             var result = _restaurantService.AddRestaurant(dto);
             if (result == null)
@@ -54,7 +54,7 @@ namespace backend.Controllers
         public IActionResult UpdateRestaurant(int id, [FromBody] Restaurant restaurant)
         {
             if (restaurant == null || restaurant.RestaurantId != id)
-                return BadRequest("Datos de restaurante invï¿½lidos.");
+                return BadRequest("Datos de restaurante inválidos.");
 
             var updated = _restaurantService.UpdateRestaurant(restaurant);
             if (!updated)

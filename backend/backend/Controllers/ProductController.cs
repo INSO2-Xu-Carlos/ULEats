@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using backend.Core;
 using DataModel;
+using backend.Model;
 
 namespace backend.Controllers
 {
@@ -15,13 +16,17 @@ namespace backend.Controllers
             _productService = productService;
         }
 
-        [HttpPost("add")]
-        public IActionResult AddProduct([FromBody] Product product)
+        [HttpPost]
+        public IActionResult AddProduct([FromBody] ProductCreateDto dto)
         {
-            var created = _productService.CreateProduct(product);
-            if (created == null)
-                return BadRequest("Bad Request. We couldnt create a product");
-            return Ok(created);
+            if (dto == null)
+                return BadRequest("Producto inválido.");
+
+            var result = _productService.AddProduct(dto);
+            if (result == null)
+                return StatusCode(500, "Error al insertar el producto.");
+
+            return Ok(result);
         }
 
         // GET: /Product/{id}

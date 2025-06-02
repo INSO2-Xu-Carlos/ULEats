@@ -1,4 +1,5 @@
-﻿using DataModel;
+﻿using backend.Model;
+using DataModel;
 using LinqToDB;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,28 @@ namespace backend.Core
         public ProductService(UlEatsDb context)
         {
             _context = context;
+        }
+
+        public Product? AddProduct(ProductCreateDto dto)
+        {
+            var product = new Product
+            {
+                RestaurantId = dto.RestaurantId,
+                Name = dto.Name,
+                Description = dto.Description,
+                Price = dto.Price,
+                ImageUrl = dto.ImageUrl,
+                Category = dto.Category,
+                IsAvailable = dto.IsAvailable
+            };
+
+            var id = _context.InsertWithInt32Identity(product);
+            if (id > 0)
+            {
+                product.ProductId = id;
+                return product;
+            }
+            return null;
         }
 
         public Product? GetProductById(int id)

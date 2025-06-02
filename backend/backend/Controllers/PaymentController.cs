@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using backend.Core;
 using DataModel;
+using backend.Model;
 
 namespace backend.Controllers
 {
@@ -17,12 +18,12 @@ namespace backend.Controllers
 
         // POST /Payment
         [HttpPost]
-        public IActionResult AddPayment([FromBody] Payment payment)
+        public IActionResult AddPayment([FromBody] PaymentCreateDto dto)
         {
-            if (payment == null)
+            if (dto == null)
                 return BadRequest("Pago inválido.");
 
-            var result = _paymentService.AddPayment(payment);
+            var result = _paymentService.AddPayment(dto);
             if (result == null)
                 return StatusCode(500, "Error al insertar el pago.");
 
