@@ -1,3 +1,5 @@
+using backend.Core;
+using DataModel;
 using Microsoft.AspNetCore.Mvc;
 
 namespace backend.Controllers
@@ -10,12 +12,17 @@ namespace backend.Controllers
         {
             "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
         };
+        private ProductService _productService;
 
         private ILogger<ClientController> _logger;
 
         public ProductController(ILogger<ClientController> logger)
         {
             _logger = logger;
+        }
+        public ProductController(ProductService productService)
+        {
+            _productService = productService;
         }
 
         [HttpGet(Name = "Pipo")]
@@ -28,6 +35,19 @@ namespace backend.Controllers
                 Summary = Summaries[Random.Shared.Next(Summaries.Length)]
             })
             .ToArray();
+        }
+
+        [HttpPost("add")]
+        public IActionResult AddProduct([FromBody] Product product)
+        {
+            if (product == null)
+                return BadRequest("Producto inválido.");
+
+            var result = _productService.AddProduct(product);
+            if (result == null)
+                return StatusCode(500, "Error al insertar el producto.");
+
+            return Ok(result);
         }
     }
 }

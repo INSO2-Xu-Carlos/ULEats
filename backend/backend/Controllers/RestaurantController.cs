@@ -11,10 +11,12 @@ namespace backend.Controllers
     {
 
         private ClientService _clientService;
+        private RestaurantService _restaurantService;
 
-        public RestaurantController(ClientService clientService)
+        public RestaurantController(ClientService clientService, RestaurantService restaurantService)
         {
             _clientService = clientService;
+            _restaurantService = restaurantService;
         }
 
         [HttpPost("create")]
@@ -33,15 +35,14 @@ namespace backend.Controllers
                 return Unauthorized("Only users with rol 'restaurant' can create a new restaurant");
             }
 
-            var newRestaurant = new Restaurant()
-            {
-                Name = request.Name,
-                Address = request.Address,
-                Phone = request.Phone,
-                UserId = request.UserId,
-                Description = request.Description,
-                LogoUrl = request.Logo_url
-            };
+            var newRestaurant = _restaurantService.CreateRestaurant(
+                request.UserId,
+                request.Name,
+                request.Address,
+                request.Phone,
+                request.Description,
+                request.Logo_url
+            );
 
             return Ok("There is a new restaurant in town!");
         }
