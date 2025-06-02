@@ -21,7 +21,7 @@ namespace backend.Controllers
         public IActionResult AddRestaurant([FromBody] RestaurantCreateDto dto)
         {
             if (dto == null)
-                return BadRequest("Restaurante inválido.");
+                return BadRequest("Restaurante invï¿½lido.");
 
             var result = _restaurantService.AddRestaurant(dto);
             if (result == null)
@@ -54,7 +54,7 @@ namespace backend.Controllers
         public IActionResult UpdateRestaurant(int id, [FromBody] Restaurant restaurant)
         {
             if (restaurant == null || restaurant.RestaurantId != id)
-                return BadRequest("Datos de restaurante inválidos.");
+                return BadRequest("Datos de restaurante invï¿½lidos.");
 
             var updated = _restaurantService.UpdateRestaurant(restaurant);
             if (!updated)
