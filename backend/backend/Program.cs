@@ -16,6 +16,8 @@ builder.Services.AddScoped<AppDataConnection>(sp =>
 
 builder.Services.AddScoped<ClientService>();
 builder.Services.AddScoped<RestaurantService>();
+builder.Services.AddScoped <CustomerService>();
+
 builder.Services.AddScoped<UlEatsDb>(sp =>
 {
     var config = sp.GetRequiredService<IConfiguration>();
