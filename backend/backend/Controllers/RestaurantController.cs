@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using backend.Core;
-using Microsoft.AspNetCore.Identity.Data;
 using DataModel;
+using backend.Model;
 
 namespace backend.Controllers
 {
@@ -9,52 +9,69 @@ namespace backend.Controllers
     [Route("[controller]")]
     public class RestaurantController : ControllerBase
     {
+        private readonly RestaurantService _restaurantService;
 
-        private ClientService _clientService;
-        private RestaurantService _restaurantService;
-
-        public RestaurantController(ClientService clientService, RestaurantService restaurantService)
+        public RestaurantController(RestaurantService restaurantService)
         {
-            _clientService = clientService;
             _restaurantService = restaurantService;
         }
 
-        [HttpPost("create")]
-        public IActionResult CreateRestaurant([FromBody] CreateRestaurantRequest request)
+        // POST /Restaurant
+        [HttpPost]
+        public IActionResult AddRestaurant([FromBody] RestaurantCreateDto dto)
         {
-            var user = _clientService.getUserById(request.UserId);
+            if (dto == null)
+                return BadRequest("Restaurante inválido.");
 
+            var result = _restaurantService.AddRestaurant(dto);
+            if (result == null)
+                return StatusCode(500, "Error al insertar el restaurante.");
 
-            if (user == null)
-            {
-                return NotFound("User not found");
-            }
-
-            if (user.UserType.ToLower() != "restaurant")
-            {
-                return Unauthorized("Only users with rol 'restaurant' can create a new restaurant");
-            }
-
-            var newRestaurant = _restaurantService.CreateRestaurant(
-                request.UserId,
-                request.Name,
-                request.Address,
-                request.Phone,
-                request.Description,
-                request.Logo_url
-            );
-
-            return Ok("There is a new restaurant in town!");
+            return Ok(result);
         }
 
-        public class CreateRestaurantRequest
+        // GET /Restaurant/{id}
+        [HttpGet("{id}")]
+        public IActionResult GetRestaurantById(int id)
         {
-            public string Name { get; set; }
-            public string Address {  get; set; }
-            public string Phone { get; set; }
-            public int UserId { get; set; }
-            public string Description { get; set; }
-            public string Logo_url { get; set; }
+            var restaurant = _restaurantService.GetRestaurantById(id);
+            if (restaurant == null)
+                return NotFound();
+
+            return Ok(restaurant);
+        }
+
+        // GET /Restaurant
+        [HttpGet]
+        public IActionResult GetAllRestaurants()
+        {
+            var restaurants = _restaurantService.GetAllRestaurants();
+            return Ok(restaurants);
+        }
+
+        // PUT /Restaurant/{id}
+        [HttpPut("{id}")]
+        public IActionResult UpdateRestaurant(int id, [FromBody] Restaurant restaurant)
+        {
+            if (restaurant == null || restaurant.RestaurantId != id)
+                return BadRequest("Datos de restaurante inválidos.");
+
+            var updated = _restaurantService.UpdateRestaurant(restaurant);
+            if (!updated)
+                return NotFound();
+
+            return NoContent();
+        }
+
+        // DELETE /Restaurant/{id}
+        [HttpDelete("{id}")]
+        public IActionResult DeleteRestaurant(int id)
+        {
+            var deleted = _restaurantService.DeleteRestaurant(id);
+            if (!deleted)
+                return NotFound();
+
+            return NoContent();
         }
     }
 }

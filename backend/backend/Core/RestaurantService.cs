@@ -1,6 +1,7 @@
-﻿using DataModel;
+﻿using backend.Model;
+using DataModel;
 using LinqToDB;
-using LinqToDB.SqlQuery;
+
 namespace backend.Core
 {
     public class RestaurantService
@@ -12,25 +13,59 @@ namespace backend.Core
             _context = context;
         }
 
-        public bool CreateRestaurant(int userId, string name, string address, string phone, string description, string logoUrl)
+        // Crear un nuevo restaurante
+        public Restaurant? AddRestaurant(RestaurantCreateDto dto)
         {
-            // Comprobar si ya existe un restaurante para ese usuario
-            var exists = _context.Restaurants.FirstOrDefault(r => r.UserId == userId);
-            if (exists != null)
-                return false;
+            // Obtener el último ID existente (o 0 si la tabla está vacía)
+            int lastId = _context.Restaurants
+                .OrderByDescending(r => r.RestaurantId)
+                .Select(r => r.RestaurantId)
+                .FirstOrDefault();
 
-            var newRestaurant = new Restaurant
+            var restaurant = new Restaurant
             {
-                Name = name,
-                Address = address,
-                Phone = phone,
-                UserId = userId,
-                Description = description,
-                LogoUrl = logoUrl
+                RestaurantId = lastId + 1,
+                Name = dto.Name,
+                Address = dto.Address,
+                Phone = dto.Phone,
+                UserId = dto.UserId,
+                Description = dto.Description,
+                LogoUrl = dto.LogoUrl
             };
 
-            _context.Insert(newRestaurant);
-            return true;
+            // Insertar el restaurante con el ID asignado manualmente
+            var rows = _context.Insert(restaurant);
+            if (rows > 0)
+            {
+                return restaurant;
+            }
+            return null;
+        }
+
+        // Obtener restaurante por ID
+        public Restaurant? GetRestaurantById(int restaurantId)
+        {
+            return _context.Restaurants.FirstOrDefault(r => r.RestaurantId == restaurantId);
+        }
+
+        // Obtener todos los restaurantes
+        public IEnumerable<Restaurant> GetAllRestaurants()
+        {
+            return _context.Restaurants.ToList();
+        }
+
+        // Actualizar restaurante
+        public bool UpdateRestaurant(Restaurant restaurant)
+        {
+            var updated = _context.Update(restaurant);
+            return updated > 0;
+        }
+
+        // Eliminar restaurante
+        public bool DeleteRestaurant(int restaurantId)
+        {
+            var deleted = _context.Restaurants.Delete(r => r.RestaurantId == restaurantId);
+            return deleted > 0;
         }
     }
 }
