@@ -26,7 +26,7 @@ namespace DataModel
 
 		#region Associations
 		/// <summary>
-		/// FK_user_id backreference
+		/// Delivery_user_id backreference
 		/// </summary>
 		[Association(ThisKey = nameof(UserId), OtherKey = nameof(Delivery.UserId))]
 		public IEnumerable<Delivery> Deliveries { get; set; } = null!;
