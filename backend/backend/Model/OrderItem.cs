@@ -16,8 +16,8 @@ namespace DataModel
 	public class OrderItem
 	{
 		[Column("order_item_id", IsPrimaryKey = true, IsIdentity = true, SkipOnInsert = true, SkipOnUpdate = true)] public int     OrderItemId { get; set; } // integer
-		[Column("order_id"                                                                                       )] public int?    OrderId     { get; set; } // integer
-		[Column("product_id"                                                                                     )] public int?    ProductId   { get; set; } // integer
+		[Column("order_id"                                                                                       )] public int     OrderId     { get; set; } // integer
+		[Column("product_id"                                                                                     )] public int     ProductId   { get; set; } // integer
 		[Column("quantity"                                                                                       )] public int     Quantity    { get; set; } // integer
 		[Column("unit_price"                                                                                     )] public decimal UnitPrice   { get; set; } // numeric(10,2)
 
@@ -25,14 +25,14 @@ namespace DataModel
 		/// <summary>
 		/// FK_order_id
 		/// </summary>
-		[Association(ThisKey = nameof(OrderId), OtherKey = nameof(DataModel.Order.OrderId))]
-		public Order? Order { get; set; }
+		[Association(CanBeNull = false, ThisKey = nameof(OrderId), OtherKey = nameof(DataModel.Order.OrderId))]
+		public Order Order { get; set; } = null!;
 
 		/// <summary>
 		/// FK_product_id
 		/// </summary>
-		[Association(ThisKey = nameof(ProductId), OtherKey = nameof(DataModel.Product.ProductId))]
-		public Product? Product { get; set; }
+		[Association(CanBeNull = false, ThisKey = nameof(ProductId), OtherKey = nameof(DataModel.Product.ProductId))]
+		public Product Product { get; set; } = null!;
 		#endregion
 	}
 }

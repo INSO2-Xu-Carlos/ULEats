@@ -28,8 +28,20 @@ namespace DataModel
 		/// <summary>
 		/// FK_user_id backreference
 		/// </summary>
+		[Association(ThisKey = nameof(UserId), OtherKey = nameof(Delivery.UserId))]
+		public IEnumerable<Delivery> Deliveries { get; set; } = null!;
+
+		/// <summary>
+		/// FK_user_id backreference
+		/// </summary>
 		[Association(ThisKey = nameof(UserId), OtherKey = nameof(OrderTracking.ChangedBy))]
 		public IEnumerable<OrderTracking> OrderTrackings { get; set; } = null!;
+
+		/// <summary>
+		/// Restaurant_user_id backreference
+		/// </summary>
+		[Association(ThisKey = nameof(UserId), OtherKey = nameof(Restaurant.UserId))]
+		public IEnumerable<Restaurant> Restaurants { get; set; } = null!;
 
 		/// <summary>
 		/// USER_ID backreference

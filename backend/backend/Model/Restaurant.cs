@@ -36,6 +36,12 @@ namespace DataModel
 		/// </summary>
 		[Association(ThisKey = nameof(RestaurantId), OtherKey = nameof(Order.RestaurantId))]
 		public IEnumerable<Order> Orders { get; set; } = null!;
+
+		/// <summary>
+		/// Restaurant_user_id
+		/// </summary>
+		[Association(ThisKey = nameof(UserId), OtherKey = nameof(DataModel.User.UserId))]
+		public User? User { get; set; }
 		#endregion
 	}
 }
