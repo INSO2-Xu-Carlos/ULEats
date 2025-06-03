@@ -16,11 +16,11 @@ namespace DataModel
 	[Table("delivery")]
 	public class Delivery
 	{
-		[Column("delivery_id"  , IsPrimaryKey = true , IsIdentity = true, SkipOnInsert = true, SkipOnUpdate = true)] public int     DeliveryId   { get; set; } // integer
-		[Column("user_id"      , CanBeNull    = false                                                             )] public string  UserId       { get; set; } = null!; // character varying(50)
-		[Column("vehicle_plate"                                                                                   )] public string? VehiclePlate { get; set; } // character varying(20)
-		[Column("phone"                                                                                           )] public string? Phone        { get; set; } // character varying(50)
-		[Column("vehicle_type"                                                                                    )] public string? VehicleType  { get; set; } // character varying(10)
+		[Column("delivery_id"  , IsPrimaryKey = true, IsIdentity = true, SkipOnInsert = true, SkipOnUpdate = true)] public int     DeliveryId   { get; set; } // integer
+		[Column("vehicle_plate"                                                                                  )] public string? VehiclePlate { get; set; } // character varying(20)
+		[Column("phone"                                                                                          )] public string? Phone        { get; set; } // character varying(50)
+		[Column("vehicle_type"                                                                                   )] public string? VehicleType  { get; set; } // character varying(10)
+		[Column("user_id"                                                                                        )] public int     UserId       { get; set; } // integer
 
 		#region Associations
 		/// <summary>
@@ -28,6 +28,12 @@ namespace DataModel
 		/// </summary>
 		[Association(ThisKey = nameof(DeliveryId), OtherKey = nameof(Order.DeliveryId))]
 		public IEnumerable<Order> Orders { get; set; } = null!;
+
+		/// <summary>
+		/// FK_user_id
+		/// </summary>
+		[Association(CanBeNull = false, ThisKey = nameof(UserId), OtherKey = nameof(DataModel.User.UserId))]
+		public User User { get; set; } = null!;
 		#endregion
 	}
 }
