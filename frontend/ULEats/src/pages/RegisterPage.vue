@@ -24,35 +24,37 @@
       </div>
       <div class="form-group">
         <label>Record type:</label>
-        <div>
-          <input
-            type="radio"
-            id="customer"
-            value="customer"
-            name="userType"
-            required
-          />
-          <label for="customer">Client</label>
-        </div>
-        <div>
-          <input
-            type="radio"
-            id="restaurant"
-            value="restaurant"
-            name="userType"
-            required
-          />
-          <label for="restaurant">Restaurant</label>
-        </div>
-        <div>
-          <input
-            type="radio"
-            id="delivery"
-            value="delivery"
-            name="userType"
-            required
-          />
-          <label for="delivery">Delivey</label>
+        <div class="record-type-options">
+          <div>
+            <input
+              type="radio"
+              id="customer"
+              value="customer"
+              v-model="userType"
+              required
+            />
+            <label for="customer">Client</label>
+          </div>
+          <div>
+            <input
+              type="radio"
+              id="restaurant"
+              value="restaurant"
+              v-model="userType"
+              required
+            />
+            <label for="restaurant">Restaurant</label>
+          </div>
+          <div>
+            <input
+              type="radio"
+              id="delivery"
+              value="delivery"
+              v-model="userType"
+              required
+            />
+            <label for="delivery">Delivery</label>
+          </div>
         </div>
       </div>
       <button type="submit">Register</button>
@@ -83,7 +85,7 @@ export default {
         Phone: this.phonenumber,
         UserType: this.userType,
       };
-
+      
       try {
         const response = await fetch("/api/Client/register", {
           method: "POST",
@@ -98,14 +100,20 @@ export default {
           alert("Error: " + errorText);
           return;
         }
+        if (this.userType === "customer") {
+          this.$router.push("/register/client");
+        } else if (this.userType === "restaurant") {
+          this.$router.push("/register/restaurant");
+        } else if (this.userType === "delivery") {
+          this.$router.push("/register/delivery");
+        }
 
-        alert("¡Registro exitoso!");
-        this.$router.push('/login');
       } catch (error) {
         alert("Error de red: " + error);
       }
     },
   },
+  
 };
 </script>
 
