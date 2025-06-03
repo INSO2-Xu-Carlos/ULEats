@@ -43,7 +43,7 @@ namespace backend.Core
         /// <returns> true if email is not in database and all fields are not null</returns>
         public bool register(String name, String password, String email, String surname, String? phone, string usertype)
         {
-            var allowedTypes = new[] { "customer", "restaurant", "delivey" };
+            var allowedTypes = new[] { "customer", "restaurant", "delivery" };
             if (!allowedTypes.Contains(usertype))
                 throw new ArgumentException("Tipo de usuario no permitido.");
 
