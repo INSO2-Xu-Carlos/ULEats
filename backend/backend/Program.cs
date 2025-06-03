@@ -19,8 +19,10 @@ builder.Services.AddScoped<RestaurantService>();
 builder.Services.AddScoped<CustomerService>();
 builder.Services.AddScoped<OrderItemService>();
 builder.Services.AddScoped<OrderTrackingService>();
+builder.Services.AddScoped<OrderService>();
 builder.Services.AddScoped<PaymentService>();
 builder.Services.AddScoped<ProductService>();
+builder.Services.AddScoped<DeliveryService>();
 
 builder.Services.AddScoped<UlEatsDb>(sp =>
 {
