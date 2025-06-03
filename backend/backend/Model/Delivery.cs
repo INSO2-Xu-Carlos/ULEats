@@ -24,16 +24,16 @@ namespace DataModel
 
 		#region Associations
 		/// <summary>
+		/// Delivery_user_id
+		/// </summary>
+		[Association(CanBeNull = false, ThisKey = nameof(UserId), OtherKey = nameof(DataModel.User.UserId))]
+		public User User { get; set; } = null!;
+
+		/// <summary>
 		/// FK_delivery_id backreference
 		/// </summary>
 		[Association(ThisKey = nameof(DeliveryId), OtherKey = nameof(Order.DeliveryId))]
 		public IEnumerable<Order> Orders { get; set; } = null!;
-
-		/// <summary>
-		/// FK_user_id
-		/// </summary>
-		[Association(CanBeNull = false, ThisKey = nameof(UserId), OtherKey = nameof(DataModel.User.UserId))]
-		public User User { get; set; } = null!;
 		#endregion
 	}
 }
