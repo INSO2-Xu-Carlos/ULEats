@@ -1,4 +1,5 @@
-﻿using DataModel;
+﻿using backend.Model;
+using DataModel;
 using LinqToDB;
 
 namespace backend.Core
@@ -13,8 +14,18 @@ namespace backend.Core
         }
 
         // Crear un nuevo pago
-        public Payment? AddPayment(Payment payment)
+        public Payment? AddPayment(PaymentCreateDto dto)
         {
+            var payment = new Payment
+            {
+                OrderId = dto.OrderId,
+                Amount = dto.Amount,
+                PaymentMethod = dto.PaymentMethod,
+                PaymentStatus = dto.PaymentStatus,
+                TransactionId = dto.TransactionId,
+                PaymentDay = dto.PaymentDay
+            };
+
             var id = _context.InsertWithInt32Identity(payment);
             if (id > 0)
             {

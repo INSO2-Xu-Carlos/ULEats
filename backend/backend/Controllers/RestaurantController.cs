@@ -1,7 +1,7 @@
-using Microsoft.AspNetCore.Mvc;
 using backend.Core;
-using DataModel;
 using backend.Model;
+using DataModel;
+using Microsoft.AspNetCore.Mvc;
 
 namespace backend.Controllers
 {
