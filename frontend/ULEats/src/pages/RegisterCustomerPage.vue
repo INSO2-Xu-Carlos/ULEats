@@ -1,22 +1,10 @@
 <template>
   <div class="register-customer-page">
-    <h1>Registro de Cliente - Dirección</h1>
+    <h1>Registro de Cliente</h1>
     <form @submit.prevent="submitAddress">
       <div class="form-group">
-        <label for="street">Calle:</label>
-        <input type="text" id="street" v-model="street" required />
-      </div>
-      <div class="form-group">
-        <label for="city">Ciudad:</label>
-        <input type="text" id="city" v-model="city" required />
-      </div>
-      <div class="form-group">
-        <label for="postalCode">Código Postal:</label>
-        <input type="text" id="postalCode" v-model="postalCode" required />
-      </div>
-      <div class="form-group">
-        <label for="country">País:</label>
-        <input type="text" id="country" v-model="country" required />
+        <label for="street">Dirección Completa:</label>
+        <input type="text" id="address" v-model="address" required />
       </div>
       <button type="submit">Guardar dirección</button>
     </form>
@@ -28,19 +16,43 @@ export default {
   name: "RegisterCustomerPage",
   data() {
     return {
-      street: "",
-      city: "",
-      postalCode: "",
-      country: "",
+      address: "",
     };
   },
   methods: {
-    submitAddress() {
-      // Aquí puedes enviar los datos al backend o continuar el flujo de registro
-      alert(
-        `Dirección guardada:\n${this.street}, ${this.city}, ${this.postalCode}, ${this.country}`
-      );
-      // Ejemplo: this.$router.push('/client');
+    async submitAddress() {
+      let userId = localStorage.getItem("user_id");
+      if (userId) userId = Number(userId);
+      const payload = {
+        userId: userId,
+        address: this.address,
+      };
+
+      try {
+        const response = await fetch("/api/Customer", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
+        });
+
+        if (!response.ok) {
+          const error = await response.text();
+          alert("Error al guardar la dirección: " + error);
+          return;
+        }
+
+        const data = await response.json();
+        if (data.userId) {
+          localStorage.setItem("user_id", data.userId);
+        }
+
+        alert("Dirección guardada correctamente.");
+        this.$router.push('/customer');
+      } catch (err) {
+        alert("Error de conexión con el servidor.");
+      }
     },
   },
 };

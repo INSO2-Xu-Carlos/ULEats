@@ -14,6 +14,9 @@ import RegisterPage from "@/pages/RegisterPage.vue";
 import RegisterCustomerPage from '@/pages/RegisterCustomerPage.vue';
 import RegisterRestaurantPage from '@/pages/RegisterRestaurantPage.vue';
 import RegisterDeliveryPage from '@/pages/RegisterDeliveryPage.vue';
+import CustomerPage from '@/pages/ClientPage.vue';
+import RestaurantPage from '@/pages/RestaurantPage.vue';
+import DeliveryPage from '@/pages/DeliveryPage.vue';
 
 const routes = [
   { path: '/', component: HomePage },
@@ -22,6 +25,9 @@ const routes = [
   { path: "/register/client", component: RegisterCustomerPage },
   { path: "/register/restaurant", component: RegisterRestaurantPage },
   { path: "/register/delivery", component: RegisterDeliveryPage },
+  { path: "/customer", component: CustomerPage },
+  { path: "/restaurant", component: RestaurantPage },
+  { path: "/delivery", component: DeliveryPage },
 ];
 
 const router = createRouter({

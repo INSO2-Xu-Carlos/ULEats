@@ -17,16 +17,10 @@ namespace backend.Core
         /// <param name="name"></param>
         /// <param name="password"></param>
         /// <returns>true if login is valid, else if login is not valid</returns>
-        public bool login(String email, String password) 
+        public User? LoginAndGetUser(string email, string password)
         {
-            User user = _context.GetTable<User>().Where(x => x.Email == email &&  x.Password == password).FirstOrDefault();
-
-            if (user == null)
-            {
-                return false;
-            }
-
-            return true;
+            var user = _context.Users.FirstOrDefault(u => u.Email == email && u.Password == password);
+            return user;
         }
 
 
@@ -41,29 +35,22 @@ namespace backend.Core
         /// <param name="phone"></param>    
         /// <param name="usertype"></param>
         /// <returns> true if email is not in database and all fields are not null</returns>
-        public bool register(String name, String password, String email, String surname, String? phone, string usertype)
+        public User? RegisterAndGetUser(string name, string password, string email, string surname, string? phone, string usertype)
         {
-            var allowedTypes = new[] { "customer", "restaurant", "delivery" };
-            if (!allowedTypes.Contains(usertype))
-                throw new ArgumentException("Tipo de usuario no permitido.");
+            var exists = _context.Users.Any(u => u.Email == email);
+            if (exists) return null;
 
-            var user = _context.GetTable<User>().FirstOrDefault(u => u.Email == email);
-            if (user != null) { return false; }
-
-            var newUser = new User
+            var user = new User
             {
                 FirstName = name,
-                LastName = surname,
-                Email = email,
                 Password = password,
+                Email = email,
+                LastName = surname,
                 Phone = phone,
                 UserType = usertype
-
             };
-
-            _context.Insert(newUser);
-
-            return true;
+            _context.Insert(user);
+            return user;
         }
 
         public User? getUserById(int userId)
