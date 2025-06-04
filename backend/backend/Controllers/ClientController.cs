@@ -28,7 +28,7 @@ namespace backend.Controllers
             if (user == null)
                 return Unauthorized("Bad credentials");
 
-            return Ok(new { UserId = user.UserId });
+            return Ok(new { UserId = user.UserId, UserType = user.UserType });
         }
 
         [HttpPost("register")]

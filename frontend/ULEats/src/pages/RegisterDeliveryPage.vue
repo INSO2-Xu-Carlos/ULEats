@@ -4,7 +4,7 @@
     <form @submit.prevent="submitDelivery">
       <div class="form-group">
         <label for="licensePlate">Matrícula del vehículo:</label>
-        <input type="text" id="licensePlate" v-model="licensePlate" required />
+        <input type="text" id="licensePlate" v-model="licensePlate" />
       </div>
       <div class="form-group">
         <label for="phone">Número de teléfono:</label>
@@ -42,7 +42,7 @@ export default {
         LicensePlate: this.licensePlate,
         Phone: this.phone,
         VehicleType: this.vehicleType,
-        userId: userId, // Enviar el userId si tu backend lo necesita
+        userId: userId,
       };
 
       try {
