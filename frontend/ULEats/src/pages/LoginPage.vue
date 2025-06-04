@@ -25,12 +25,49 @@ export default {
     };
   },
   methods: {
-    handleLogin() {
-      console.log("Login details:", {
-        email: this.email,
-        password: this.password,
-      });
-      alert("Successful LogIn (simulated)");
+    async handleLogin() {
+      const payload = {
+        Email: this.email,
+        Password: this.password,
+      };
+
+      try {
+        const response = await fetch("/api/Client/login", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
+        });
+
+        if (!response.ok) {
+          const errorText = await response.text();
+          alert("Error: " + errorText);
+          return;
+        }
+
+        const data = await response.json();
+        console.log("Respuesta del backend:", data);
+
+        if (data.userId) {
+          localStorage.setItem("user_id", data.userId);
+        }
+        if (data.userType) {
+          localStorage.setItem("user_type", data.userType);
+          this.userType = data.userType;
+        }
+        
+        alert("Login exitoso");
+        if (this.userType === "customer") {
+          this.$router.push("/customer");
+        } else if (this.userType === "restaurant") {
+          this.$router.push("/restaurant");
+        } else if (this.userType === "delivery") {
+          this.$router.push("/delivery");
+        }
+      } catch (err) {
+        alert("Error de conexión con el servidor.");
+      }
     },
   },
 };
