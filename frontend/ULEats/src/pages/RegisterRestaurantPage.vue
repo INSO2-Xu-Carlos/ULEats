@@ -41,35 +41,43 @@ export default {
   },
   methods: {
     async submitRestaurant() {
-      const payload = {
-        Name: this.name,
-        Address: this.address,
-        Phone: this.phone,
-        Description: this.description,
-        LogoUrl: this.logoUrl,
-      };
+    const userId = localStorage.getItem("user_id");
+    const payload = {
+      Name: this.name,
+      Address: this.address,
+      Phone: this.phone,
+      Description: this.description,
+      LogoUrl: this.logoUrl,
+      userId: userId,
+    };
 
-      try {
-        const response = await fetch("api/Restaurant", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(payload),
-        });
+    try {
+      const response = await fetch("/api/Restaurant", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
 
-        if (!response.ok) {
-          const error = await response.text();
-          alert("Error al registrar el restaurante: " + error);
-          return;
-        }
-
-        alert("Restaurante registrado correctamente.");
-        // this.$router.push('/restaurant');
-      } catch (err) {
-        alert("Error de conexión con el servidor.");
+      if (!response.ok) {
+        const error = await response.text();
+        alert("Error al registrar el restaurante: " + error);
+        return;
       }
-    },
+
+      // Suponiendo que el backend devuelve un objeto con userId
+      const data = await response.json();
+      if (data.userId) {
+        localStorage.setItem("user_id", data.userId);
+      }
+
+      alert("Restaurante registrado correctamente.");
+      this.$router.push('/restaurant');
+    } catch (err) {
+      alert("Error de conexión con el servidor.");
+    }
+  },
   },
 };
 </script>

@@ -37,15 +37,16 @@ export default {
   },
   methods: {
     async submitDelivery() {
-      // Construir el DTO según espera tu backend
+      const userId = localStorage.getItem("user_id");
       const payload = {
         LicensePlate: this.licensePlate,
         Phone: this.phone,
         VehicleType: this.vehicleType,
+        userId: userId, // Enviar el userId si tu backend lo necesita
       };
 
       try {
-        const response = await fetch("api/Delivery", {
+        const response = await fetch("/api/Delivery", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -60,9 +61,12 @@ export default {
         }
 
         const data = await response.json();
+        if (data.userId) {
+          localStorage.setItem("user_id", data.userId);
+        }
+
         alert("Repartidor registrado correctamente.");
-        // Puedes redirigir si lo deseas:
-        // this.$router.push('/delivery');
+        this.$router.push('/delivery');
       } catch (err) {
         alert("Error de conexión con el servidor.");
       }

@@ -24,12 +24,11 @@ namespace backend.Controllers
         [HttpPost("login")]
         public IActionResult Login([FromBody] LoginRequest request)
         {
-            bool isValid = _clientService.login(request.Email, request.Password);
-            if (!isValid) {
-                return Unauthorized("Bad credentials"); 
-            }
+            var user = _clientService.LoginAndGetUser(request.Email, request.Password);
+            if (user == null)
+                return Unauthorized("Bad credentials");
 
-            return Ok("Login Succesful");
+            return Ok(new { UserId = user.UserId });
         }
 
         [HttpPost("register")]
@@ -54,12 +53,11 @@ namespace backend.Controllers
             {
                 return BadRequest("Password is weak, please enter more characters");
             }
-            bool  success = _clientService.register(request.FirstName, request.Password, request.Email, request.LastName, request.Phone, request.UserType);
-            if (!success) {
-                return BadRequest("Email is already registered"); 
-            }
+            var user = _clientService.RegisterAndGetUser(request.FirstName, request.Password, request.Email, request.LastName, request.Phone, request.UserType);
+            if (user == null)
+                return BadRequest("Email is already registered");
 
-            return Ok("Register Succesful!");
+            return Ok(new { UserId = user.UserId });
         }
 
         public class LoginRequest
