@@ -100,6 +100,10 @@ export default {
           alert("Error: " + errorText);
           return;
         }
+        const data = await response.json();
+        if (data.userId) {
+          localStorage.setItem("user_id", data.userId);
+        }
         if (this.userType === "customer") {
           this.$router.push("/register/client");
         } else if (this.userType === "restaurant") {
