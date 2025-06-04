@@ -22,10 +22,11 @@ export default {
   methods: {
     async submitAddress() {
       let userId = localStorage.getItem("user_id");
+
       if (userId) userId = Number(userId);
       const payload = {
-        userId: userId,
-        address: this.address,
+        UserId: Number(localStorage.getItem("user_id")),
+        Address: this.address,
       };
 
       try {
@@ -43,7 +44,7 @@ export default {
           return;
         }
 
-        const data = await response.json();
+        const data = await response.json(); 
         if (data.userId) {
           localStorage.setItem("user_id", data.userId);
         }

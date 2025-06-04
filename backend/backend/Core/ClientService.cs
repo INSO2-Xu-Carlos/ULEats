@@ -49,7 +49,10 @@ namespace backend.Core
                 Phone = phone,
                 UserType = usertype
             };
-            _context.Insert(user);
+
+            var userId = _context.InsertWithInt32Identity(user);
+            user.UserId = userId;
+
             return user;
         }
 
