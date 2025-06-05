@@ -18,7 +18,6 @@ namespace DataModel
 	public class Order
 	{
 		[Column("order_id"               , IsPrimaryKey = true , IsIdentity = true, SkipOnInsert = true, SkipOnUpdate = true)] public int             OrderId               { get; set; } // integer
-		[Column("customer_id"                                                                                               )] public int             CustomerId            { get; set; } // integer
 		[Column("restaurant_id"                                                                                             )] public int             RestaurantId          { get; set; } // integer
 		[Column("delivery_id"                                                                                               )] public int             DeliveryId            { get; set; } // integer
 		[Column("order_date"                                                                                                )] public DateTimeOffset? OrderDate             { get; set; } // timestamp (6) with time zone
@@ -30,25 +29,14 @@ namespace DataModel
 		[Column("estimated_delivery_time"                                                                                   )] public DateTimeOffset? EstimatedDeliveryTime { get; set; } // timestamp (6) with time zone
 		[Column("actual_delivey_time"                                                                                       )] public DateTimeOffset? ActualDeliveyTime     { get; set; } // timestamp (6) with time zone
 		[Column("special_instructions"                                                                                      )] public string?         SpecialInstructions   { get; set; } // text
+		[Column("order_items_id"                                                                                            )] public int             OrderItemsId          { get; set; } // integer
 
 		#region Associations
-		/// <summary>
-		/// FK_customer_id
-		/// </summary>
-		[Association(CanBeNull = false, ThisKey = nameof(CustomerId), OtherKey = nameof(DataModel.Customer.CustomerId))]
-		public Customer Customer { get; set; } = null!;
-
 		/// <summary>
 		/// FK_delivery_id
 		/// </summary>
 		[Association(CanBeNull = false, ThisKey = nameof(DeliveryId), OtherKey = nameof(DataModel.Delivery.DeliveryId))]
 		public Delivery Delivery { get; set; } = null!;
-
-		/// <summary>
-		/// FK_order_id backreference
-		/// </summary>
-		[Association(ThisKey = nameof(OrderId), OtherKey = nameof(OrderItem.OrderId))]
-		public IEnumerable<OrderItem> OrderItems { get; set; } = null!;
 
 		/// <summary>
 		/// FK_order_id backreference
@@ -61,6 +49,12 @@ namespace DataModel
 		/// </summary>
 		[Association(ThisKey = nameof(OrderId), OtherKey = nameof(OrderTracking.OrderId))]
 		public IEnumerable<OrderTracking> OrderTrackings { get; set; } = null!;
+
+		/// <summary>
+		/// FK_order_items_id
+		/// </summary>
+		[Association(CanBeNull = false, ThisKey = nameof(OrderItemsId), OtherKey = nameof(OrderItem.OrderItemId))]
+		public OrderItem OrderItems { get; set; } = null!;
 
 		/// <summary>
 		/// FK_restaurant_id
