@@ -38,8 +38,13 @@ export default {
   methods: {
     async submitDelivery() {
       const userId = localStorage.getItem("user_id");
+      let vehiclePlate = this.licensePlate;
+
+      if(this.vehicleType == "Bike" ||this.vehicleType == "Scooter"){
+        vehiclePlate = null;
+      }
       const payload = {
-        LicensePlate: this.licensePlate,
+        vehiclePlate: this.licensePlate,
         Phone: this.phone,
         VehicleType: this.vehicleType,
         userId: userId,

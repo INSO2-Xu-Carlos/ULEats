@@ -48,7 +48,10 @@ namespace backend.Controllers
             {
                 return BadRequest("Email is not in a valid pattern");
             }
-
+            if(request.Phone != null && request.Phone.Length != 9) 
+            {
+                return BadRequest("Phone must have 9 digits!");
+            }
             if (request.Password.Length < 8)
             {
                 return BadRequest("Password is weak, please enter more characters");
