@@ -6,6 +6,7 @@
 // ---------------------------------------------------------------------------------------------------
 
 using LinqToDB.Mapping;
+using System.Collections.Generic;
 
 #pragma warning disable 1573, 1591
 #nullable enable
@@ -16,17 +17,23 @@ namespace DataModel
 	public class OrderItem
 	{
 		[Column("order_item_id", IsPrimaryKey = true, IsIdentity = true, SkipOnInsert = true, SkipOnUpdate = true)] public int     OrderItemId { get; set; } // integer
-		[Column("order_id"                                                                                       )] public int     OrderId     { get; set; } // integer
 		[Column("product_id"                                                                                     )] public int     ProductId   { get; set; } // integer
 		[Column("quantity"                                                                                       )] public int     Quantity    { get; set; } // integer
 		[Column("unit_price"                                                                                     )] public decimal UnitPrice   { get; set; } // numeric(10,2)
+		[Column("customer_id"                                                                                    )] public int     CustomerId  { get; set; } // integer
 
 		#region Associations
 		/// <summary>
-		/// FK_order_id
+		/// FK_customer_id
 		/// </summary>
-		[Association(CanBeNull = false, ThisKey = nameof(OrderId), OtherKey = nameof(DataModel.Order.OrderId))]
-		public Order Order { get; set; } = null!;
+		[Association(CanBeNull = false, ThisKey = nameof(CustomerId), OtherKey = nameof(DataModel.Customer.CustomerId))]
+		public Customer Customer { get; set; } = null!;
+
+		/// <summary>
+		/// FK_order_items_id backreference
+		/// </summary>
+		[Association(ThisKey = nameof(OrderItemId), OtherKey = nameof(Order.OrderItemsId))]
+		public IEnumerable<Order> Orders { get; set; } = null!;
 
 		/// <summary>
 		/// FK_product_id
