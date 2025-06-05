@@ -24,8 +24,8 @@ namespace DataModel
 		/// <summary>
 		/// FK_customer_id backreference
 		/// </summary>
-		[Association(ThisKey = nameof(CustomerId), OtherKey = nameof(Order.CustomerId))]
-		public IEnumerable<Order> Orders { get; set; } = null!;
+		[Association(ThisKey = nameof(CustomerId), OtherKey = nameof(OrderItem.CustomerId))]
+		public IEnumerable<OrderItem> OrderItems { get; set; } = null!;
 
 		/// <summary>
 		/// USER_ID
