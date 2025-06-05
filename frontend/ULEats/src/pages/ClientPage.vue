@@ -3,10 +3,16 @@
     <header class="header">
       <h1>Bienvenido a ULEats</h1>
       <p>Explora los restaurantes disponibles para tu pedido.</p>
-      <button class="cart-button" @click="goToCart" title="Ver carrito">
+      <button class="cart-button" @click="showCart = true" title="Ver carrito">
         🛒
       </button>
     </header>
+    <CartDrawer
+      :visible="showCart"
+      :cartItems="cart"
+      @close="showCart = false"
+      @remove-item="removeFromCart"
+    />
     <main class="main-content">
       <RestaurantList
         :restaurants="restaurants"
@@ -14,7 +20,11 @@
       />
       <section class="order-section">
         <h2>Productos del restaurante</h2>
-        <ProductList :products="products" v-if="selectedRestaurant" />
+        <ProductList
+          :products="products"
+          v-if="selectedRestaurant"
+          @select-product="addToCart"
+        />
         <p v-else>Selecciona un restaurante para ver sus productos.</p>
       </section>
     </main>
@@ -24,23 +34,42 @@
 <script>
 import RestaurantList from "@/components/RestaurantList.vue";
 import ProductList from "@/components/ProductList.vue";
+import CartDrawer from "@/components/CartDrawer.vue";
 
 export default {
   name: "ClientPage",
   components: {
     RestaurantList,
     ProductList,
+    CartDrawer,
   },
   data() {
     return {
       restaurants: [],
       selectedRestaurant: null,
       products: [],
+      cart: [],
+      showCart: false,
     };
   },
   methods: {
     goToCart() {
-      this.$router.push("/cart");
+      this.showCart = true;
+    },
+    addToCart(product) {
+      const existing = this.cart.find(
+        (item) => (item.productId || item.id) === (product.productId || product.id)
+      );
+      if (existing) {
+        existing.quantity = (existing.quantity || 1) + 1;
+      } else {
+        this.cart.push({ ...product, quantity: 1 });
+      }
+    },
+    removeFromCart(product) {
+      this.cart = this.cart.filter(
+        (item) => (item.productId || item.id) !== (product.productId || product.id)
+      );
     },
     async fetchRestaurants() {
       try {

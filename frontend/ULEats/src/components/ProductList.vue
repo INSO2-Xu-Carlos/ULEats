@@ -1,12 +1,18 @@
 <template>
   <section class="product-list">
     <ul v-if="products.length">
-      <li v-for="product in products" :key="product.productId || product.id" class="product-item">
-        <div class="product-info">
-          <span class="product-name">{{ product.name }}</span>
-          <span class="product-price">{{ product.price }} €</span>
-        </div>
-        <div class="product-description">{{ product.description }}</div>
+      <li
+        v-for="product in products"
+        :key="product.productId || product.id"
+        class="product-item"
+      >
+        <button class="product-btn" @click="$emit('select-product', product)">
+          <div class="product-info">
+            <span class="product-name">{{ product.name }}</span>
+            <span class="product-price">{{ product.price }} €</span>
+          </div>
+          <div class="product-description">{{ product.description }}</div>
+        </button>
       </li>
     </ul>
     <p v-else>No hay productos disponibles para este restaurante.</p>
@@ -37,6 +43,21 @@ export default {
   margin-bottom: 15px;
   padding-bottom: 10px;
   border-bottom: 1px solid #eee;
+  list-style: none;
+}
+.product-btn {
+  width: 100%;
+  background: #fff;
+  border: 1px solid #007bff;
+  border-radius: 5px;
+  padding: 10px;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+.product-btn:hover {
+  background: #007bff;
+  color: #fff;
 }
 .product-info {
   display: flex;
