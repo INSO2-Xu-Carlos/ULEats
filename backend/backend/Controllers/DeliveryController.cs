@@ -21,12 +21,33 @@ namespace backend.Controllers
         public IActionResult AddDelivery([FromBody] DeliveryCreateDTO dto)
         {
             if (dto == null)
-                return BadRequest("Datos de entrega inválidos.");
+                return BadRequest("Bad credentials");
+            
+            if (dto.VehicleType == "Car" || dto.VehicleType == "Motorbike")
+            {      
+                if (string.IsNullOrWhiteSpace(dto.VehiclePlate))
+                {
+                    return BadRequest(dto.VehicleType + " must have a vehicle plate!");
+                }
+            }
+            else if (dto.VehicleType == "Bike" || dto.VehicleType == "Scooter")
+            {
+                if (!string.IsNullOrWhiteSpace(dto.VehiclePlate))
+                {
+                    return BadRequest(dto.VehicleType + " must not have a vehicle plate!");
+                } 
+                dto.VehiclePlate = null;
+            }
+
+            if (dto.Phone != null && dto.Phone.Length != 9)
+            {
+                return BadRequest("Phone must have 9 digits");
+            }
 
             var result = _deliveryService.AddDelivery(dto);
-            if (result == null)
-                return StatusCode(500, "Error al insertar la entrega.");
 
+            if (result == null)
+                return StatusCode(500, "Error");
             return Ok(result);
         }
 
