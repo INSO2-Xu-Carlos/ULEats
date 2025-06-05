@@ -18,7 +18,7 @@ namespace backend.Core
         {
             var orderItem = new OrderItem
             {
-                OrderId = dto.OrderId,
+                //OrderId = dto.OrderId,
                 ProductId = dto.ProductId,
                 Quantity = dto.Quantity,
                 UnitPrice = dto.UnitPrice
