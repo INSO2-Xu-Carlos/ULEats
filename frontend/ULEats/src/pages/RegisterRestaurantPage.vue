@@ -41,14 +41,14 @@ export default {
   },
   methods: {
     async submitRestaurant() {
-    const userId = localStorage.getItem("user_id");
+    
     const payload = {
       Name: this.name,
       Address: this.address,
       Phone: this.phone,
       Description: this.description,
       LogoUrl: this.logoUrl,
-      userId: userId,
+      UserId: Number(localStorage.getItem("user_id")),
     };
 
     try {

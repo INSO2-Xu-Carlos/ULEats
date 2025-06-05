@@ -3,23 +3,75 @@
     <header class="header">
       <h1>Bienvenido a ULEats</h1>
       <p>Explora los restaurantes disponibles para tu pedido.</p>
+      <button class="cart-button" @click="goToCart" title="Ver carrito">
+        🛒
+      </button>
     </header>
     <main class="main-content">
-      <aside class="restaurant-display">
-        <h2>Restaurantes Disponibles</h2>
-        <p>No hay restaurantes disponibles en este momento.</p>
-      </aside>
+      <RestaurantList
+        :restaurants="restaurants"
+        @select-restaurant="handleSelectRestaurant"
+      />
       <section class="order-section">
-        <h2>Tu Pedido</h2>
-        <p>Aquí aparecerán los detalles de tu pedido.</p>
+        <h2>Productos del restaurante</h2>
+        <ProductList :products="products" v-if="selectedRestaurant" />
+        <p v-else>Selecciona un restaurante para ver sus productos.</p>
       </section>
     </main>
   </div>
 </template>
 
 <script>
+import RestaurantList from "@/components/RestaurantList.vue";
+import ProductList from "@/components/ProductList.vue";
+
 export default {
   name: "ClientPage",
+  components: {
+    RestaurantList,
+    ProductList,
+  },
+  data() {
+    return {
+      restaurants: [],
+      selectedRestaurant: null,
+      products: [],
+    };
+  },
+  methods: {
+    goToCart() {
+      this.$router.push("/cart");
+    },
+    async fetchRestaurants() {
+      try {
+        const response = await fetch("/api/Restaurant");
+        if (response.ok) {
+          const data = await response.json();
+          this.restaurants = data;
+        } else {
+          this.restaurants = [];
+        }
+      } catch (err) {
+        this.restaurants = [];
+      }
+    },
+    async handleSelectRestaurant(restaurant) {
+      this.selectedRestaurant = restaurant;
+      try {
+        const response = await fetch(`/api/Product/ByRestaurant/${restaurant.restaurantId || restaurant.id}`);
+        if (response.ok) {
+          this.products = await response.json();
+        } else {
+          this.products = [];
+        }
+      } catch (err) {
+        this.products = [];
+      }
+    },
+  },
+  mounted() {
+    this.fetchRestaurants();
+  },
 };
 </script>
 

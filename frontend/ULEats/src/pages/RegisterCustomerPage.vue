@@ -21,9 +21,7 @@ export default {
   },
   methods: {
     async submitAddress() {
-      let userId = localStorage.getItem("user_id");
 
-      if (userId) userId = Number(userId);
       const payload = {
         UserId: Number(localStorage.getItem("user_id")),
         Address: this.address,

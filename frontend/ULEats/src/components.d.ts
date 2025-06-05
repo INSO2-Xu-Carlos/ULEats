@@ -10,7 +10,9 @@ declare module 'vue' {
     AppFooter: typeof import('./components/AppFooter.vue')['default']
     LogIn: typeof import('./components/LogIn.vue')['default']
     LoginButton: typeof import('./components/LoginButton.vue')['default']
+    ProductList: typeof import('./components/ProductList.vue')['default']
     RegisterButton: typeof import('./components/RegisterButton.vue')['default']
+    RestaurantList: typeof import('./components/RestaurantList.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
   }
