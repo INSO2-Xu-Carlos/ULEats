@@ -85,34 +85,6 @@ export default {
         alert("No se ha encontrado el customer_id. Inicia sesión de nuevo.");
         return;
       }
-
-      // Comprobar si el producto ya está en el carrito
-      let cartItems = [];
-      try {
-        const response = await fetch(`/api/OrderItem/byCustomer/${customerId}`);
-        if (response.ok) {
-          cartItems = await response.json();
-        }
-      } catch {
-        cartItems = [];
-      }
-
-      const existingItem = cartItems.find(
-        item => (item.productId || item.id) === (product.productId || product.id)
-      );
-
-      if (existingItem) {
-        // Si existe, actualiza la cantidad
-        const updatedPayload = {
-          quantity: existingItem.quantity + 1
-        };
-        await fetch(`/api/OrderItem/${existingItem.orderItemId || existingItem.id}`, {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(updatedPayload),
-        });
-      } else {
-        // Si no existe, crea el order_item
         const payload = {
           customerId: Number(customerId),
           productId: product.productId || product.id,
@@ -125,7 +97,6 @@ export default {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload),
         });
-      }
 
       this.fetchCartItems();
     },
