@@ -11,6 +11,8 @@ declare module 'vue' {
     CartDrawer: typeof import('./components/CartDrawer.vue')['default']
     LogIn: typeof import('./components/LogIn.vue')['default']
     LoginButton: typeof import('./components/LoginButton.vue')['default']
+    Payment: typeof import('./components/Payment.vue')['default']
+    ProductCartList: typeof import('./components/ProductCartList.vue')['default']
     ProductList: typeof import('./components/ProductList.vue')['default']
     RegisterButton: typeof import('./components/RegisterButton.vue')['default']
     RestaurantList: typeof import('./components/RestaurantList.vue')['default']

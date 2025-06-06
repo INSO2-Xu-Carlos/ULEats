@@ -5,6 +5,7 @@ using System.Linq;
 using Microsoft.AspNetCore.Identity.Data;
 using backend.Core;
 using System.Text.RegularExpressions;
+using DataModel;
 
 namespace backend.Controllers
 {
@@ -28,7 +29,9 @@ namespace backend.Controllers
             if (user == null)
                 return Unauthorized("Bad credentials");
 
-            return Ok(new { UserId = user.UserId, UserType = user.UserType });
+            var customer = _clientService.GetCustomerByUserId(user.UserId);
+
+            return Ok(new { UserId = user.UserId, UserType = user.UserType, CustomerId = customer?.CustomerId });
         }
 
         [HttpPost("register")]

@@ -19,7 +19,7 @@ namespace backend.Core
         {
             var order = new Order
             {
-                //CustomerId = dto.CustomerId,
+                OrderItemsId = dto.OrderItemsId,
                 RestaurantId = dto.RestaurantId,
                 DeliveryId = dto.DeliveryId,
                 OrderDate = dto.OrderDate,

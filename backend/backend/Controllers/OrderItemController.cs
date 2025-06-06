@@ -73,5 +73,12 @@ namespace backend.Controllers
 
             return NoContent();
         }
+
+        [HttpGet("byCustomer/{customerId}")]
+        public IActionResult GetOrderItemsByCustomer(int customerId)
+        {
+            var items = _orderItemService.GetOrderItemsByCustomer(customerId);
+            return Ok(items);
+        }
     }
 }

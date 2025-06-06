@@ -60,6 +60,10 @@ namespace backend.Core
         {
             return _context.GetTable<User>().FirstOrDefault(u => u.UserId == userId);
         }
+        public Customer? GetCustomerByUserId(int userId)
+        {
+            return _context.Customers.FirstOrDefault(c => c.UserId == userId);
+        }
 
     }
 }

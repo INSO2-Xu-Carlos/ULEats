@@ -52,6 +52,9 @@ export default {
         if (data.userId) {
           localStorage.setItem("user_id", data.userId);
         }
+        if(data.customerId) {
+          localStorage.setItem("customer_id", data.customerId);
+        }
         if (data.userType) {
           localStorage.setItem("user_type", data.userType);
           this.userType = data.userType;

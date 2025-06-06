@@ -17,6 +17,7 @@ import RegisterDeliveryPage from '@/pages/RegisterDeliveryPage.vue';
 import CustomerPage from '@/pages/ClientPage.vue';
 import RestaurantPage from '@/pages/RestaurantPage.vue';
 import DeliveryPage from '@/pages/DeliveryPage.vue';
+import PaymentPage from '@/pages/PaymentPage.vue';
 
 const routes = [
   { path: '/', component: HomePage },
@@ -28,6 +29,7 @@ const routes = [
   { path: "/customer", component: CustomerPage },
   { path: "/restaurant", component: RestaurantPage },
   { path: "/delivery", component: DeliveryPage },
+  { path: "/customer/payment", component: PaymentPage },
 ];
 
 const router = createRouter({
