@@ -51,6 +51,7 @@ export default {
       products: [],
       cart: [],
       showCart: false,
+      cartRestaurantId: null,
     };
   },
   methods: {
@@ -85,18 +86,28 @@ export default {
         alert("No se ha encontrado el customer_id. Inicia sesión de nuevo.");
         return;
       }
-        const payload = {
-          customerId: Number(customerId),
-          productId: product.productId || product.id,
-          quantity: 1,
-          unitPrice: product.price,
-          productName: product.name
-        };
-        await fetch("/api/OrderItem", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload),
-        });
+      const productRestaurantId = this.selectedRestaurant?.restaurantId || this.selectedRestaurant?.id;
+      if (this.cart.length > 0 && this.cartRestaurantId && this.cartRestaurantId !== productRestaurantId) {
+        alert("Solo puedes añadir productos de un restaurante a la vez. Vacía el carrito para cambiar de restaurante.");
+        return;
+      }
+
+      if (this.cart.length === 0) {
+        this.cartRestaurantId = productRestaurantId;
+      }
+
+      const payload = {
+        customerId: Number(customerId),
+        productId: product.productId || product.id,
+        quantity: 1,
+        unitPrice: product.price,
+        productName: product.name
+      };
+      await fetch("/api/OrderItem", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
 
       this.fetchCartItems();
     },
@@ -104,17 +115,25 @@ export default {
       const customerId = localStorage.getItem("customer_id");
       if (!customerId) {
         this.cart = [];
+        this.cartRestaurantId = null;
         return;
       }
       try {
         const response = await fetch(`/api/OrderItem/byCustomer/${customerId}`);
         if (response.ok) {
           this.cart = await response.json();
+          if (this.cart.length > 0) {
+            this.cartRestaurantId = this.selectedRestaurant?.restaurantId || this.selectedRestaurant?.id;
+          } else {
+            this.cartRestaurantId = null;
+          }
         } else {
           this.cart = [];
+          this.cartRestaurantId = null;
         }
       } catch {
         this.cart = [];
+        this.cartRestaurantId = null;
       }
     },
     async removeFromCart(item) {

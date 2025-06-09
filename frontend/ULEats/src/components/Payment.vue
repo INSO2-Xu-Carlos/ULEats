@@ -59,12 +59,12 @@ export default {
           return;
         }
       }
-      // Aquí puedes emitir un evento o hacer la lógica de pago
       alert(
         this.paymentType === "cash"
           ? "Pago en efectivo seleccionado."
           : "Pago con tarjeta realizado."
       );
+      this.$emit("payment-success");
     },
   },
 };

@@ -7,11 +7,14 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    AcceptedOrders: typeof import('./components/AcceptedOrders.vue')['default']
     AppFooter: typeof import('./components/AppFooter.vue')['default']
     CartDrawer: typeof import('./components/CartDrawer.vue')['default']
     LogIn: typeof import('./components/LogIn.vue')['default']
     LoginButton: typeof import('./components/LoginButton.vue')['default']
+    NewAddress: typeof import('./components/NewAddress.vue')['default']
     Payment: typeof import('./components/Payment.vue')['default']
+    PendingOrders: typeof import('./components/PendingOrders.vue')['default']
     ProductCartList: typeof import('./components/ProductCartList.vue')['default']
     ProductList: typeof import('./components/ProductList.vue')['default']
     RegisterButton: typeof import('./components/RegisterButton.vue')['default']
