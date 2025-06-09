@@ -67,5 +67,12 @@ namespace backend.Controllers
                 return NotFound();
             return Ok("Order deleted succesfully");
         }
+
+        [HttpGet("byDelivery/{deliveryId}")]
+        public IActionResult GetOrdersByDeliveryId(int deliveryId)
+        {
+            var orders = _orderService.GetOrdersByDeliveryId(deliveryId);
+            return Ok(orders);
+        }
     }
 }

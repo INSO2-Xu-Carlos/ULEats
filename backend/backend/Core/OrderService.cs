@@ -83,6 +83,11 @@ namespace backend.Core
             return affected > 0;
         }
 
+        public IEnumerable<Order> GetOrdersByDeliveryId(int deliveryId)
+        {
+            return _context.Orders.Where(o => o.DeliveryId == deliveryId).ToList();
+        }
+
         public bool DeleteOrder(int id)
         {
             var affected = _context.Orders
