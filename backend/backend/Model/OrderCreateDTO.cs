@@ -2,7 +2,6 @@
 {
     public class OrderCreateDTO
     {
-        public int OrderItemsId { get; set; }
         public int RestaurantId { get; set; }
         public int DeliveryId { get; set; }
         public DateTimeOffset? OrderDate { get; set; }
