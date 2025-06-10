@@ -19,7 +19,6 @@ namespace backend.Core
         {
             var order = new Order
             {
-                OrderItemsId = dto.OrderItemsId,
                 RestaurantId = dto.RestaurantId,
                 DeliveryId = dto.DeliveryId,
                 OrderDate = dto.OrderDate,
@@ -67,7 +66,6 @@ namespace backend.Core
         {
             var affected = _context.Orders
                 .Where(o => o.OrderId == id)
-                //.Set(o => o.CustomerId, updated.CustomerId)
                 .Set(o => o.RestaurantId, updated.RestaurantId)
                 .Set(o => o.DeliveryId, updated.DeliveryId)
                 .Set(o => o.OrderDate, updated.OrderDate)
