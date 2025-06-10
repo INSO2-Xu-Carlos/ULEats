@@ -29,8 +29,15 @@ namespace DataModel
 		[Column("estimated_delivery_time"                                                                                   )] public DateTimeOffset? EstimatedDeliveryTime { get; set; } // timestamp (6) with time zone
 		[Column("actual_delivey_time"                                                                                       )] public DateTimeOffset? ActualDeliveyTime     { get; set; } // timestamp (6) with time zone
 		[Column("special_instructions"                                                                                      )] public string?         SpecialInstructions   { get; set; } // text
+		[Column("customer_id"                                                                                               )] public int             CustomerId            { get; set; } // integer
 
 		#region Associations
+		/// <summary>
+		/// FK_customer_id
+		/// </summary>
+		[Association(CanBeNull = false, ThisKey = nameof(CustomerId), OtherKey = nameof(DataModel.Customer.CustomerId))]
+		public Customer Customer { get; set; } = null!;
+
 		/// <summary>
 		/// FK_delivery_id
 		/// </summary>
