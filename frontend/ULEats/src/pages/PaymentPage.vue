@@ -5,7 +5,7 @@
       :savedAddress="savedAddress"
       @address-selected="setSelectedAddress"
     />
-    <Payment @payment-success="realizarPedido" />
+    <Payment @payment-success="newOrder" />
   </div>
 </template>
 
@@ -32,10 +32,28 @@ export default {
     setSelectedAddress(address) {
       this.selectedAddress = address;
     },
-    async realizarPedido() {
+    async newOrder() {
       const customerId = localStorage.getItem("customer_id");
       if (!customerId) {
         this.$router.push("/customer");
+        return;
+      }
+
+      const productId = this.cartItems[0].productId || this.cartItems[0].id;
+
+      let restaurantId = null;
+      try {
+        const res = await fetch(`/api/Product/${productId}`);
+        if (res.ok) {
+          const product = await res.json();
+          restaurantId = product.restaurantId;
+        }
+      } catch {
+        restaurantId = null;
+      }
+
+      if (!restaurantId) {
+        alert("No se ha encontrado el restaurante del pedido.");
         return;
       }
 
@@ -44,22 +62,27 @@ export default {
       );
       const deliveryFee = 2;
       const totalAmount = subtotal + deliveryFee;
-      const restaurantId = this.cartItems.length > 0 ? this.cartItems[0].restaurantId || 0 : 0;
+
+      if (!this.selectedAddress){
+        this.selectedAddress = this.savedAddress;
+      }
 
       const orderPayload = {
-        customerId: Number(customerId),
         restaurantId: restaurantId,
+        customerId: Number(customerId),
+        deliveryId: null,
         orderDate: new Date().toISOString(),
-        status: "pendiente",
+        status: "pending",
         deliveryAddress: this.selectedAddress,
         subtotal: subtotal,
         deliveryFee: deliveryFee,
         totalAmount: totalAmount,
         estimatedDeliveryTime: new Date().toISOString(),
-        actualDeliveyTime: new Date().toISOString(),
+        actualDeliveryTime: new Date().toISOString(),
         specialInstructions: "",
       };
-
+      console.log(orderPayload);
+      
       await fetch("/api/Order", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -69,7 +92,7 @@ export default {
       this.$router.push("/customer");
     },
   },
-  mounted() {
+   mounted() {
     const customerId = localStorage.getItem("customer_id");
     if (!customerId) {
       this.cartItems = [];
@@ -86,8 +109,9 @@ export default {
     fetch(`/api/Customer/${customerId}`)
       .then(res => res.ok ? res.json() : {})
       .then(data => {
-        this.savedAddress = data.direccion || "";
-        this.selectedAddress = data.direccion || "";
+        console.log("Datos del customer:", data);
+        this.savedAddress = data.address || "";
+        this.selectedAddress = data.address || "";
       })
       .catch(() => {
         this.savedAddress = "";

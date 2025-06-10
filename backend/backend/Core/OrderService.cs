@@ -19,6 +19,7 @@ namespace backend.Core
         {
             var order = new Order
             {
+                CustomerId = dto.CustomerId,
                 RestaurantId = dto.RestaurantId,
                 DeliveryId = dto.DeliveryId,
                 OrderDate = dto.OrderDate,
@@ -28,7 +29,7 @@ namespace backend.Core
                 DeliveryFee = dto.DeliveryFee,
                 TotalAmount = dto.TotalAmount,
                 EstimatedDeliveryTime = dto.EstimatedDeliveryTime,
-                ActualDeliveyTime = dto.ActualDeliveyTime,
+                ActualDeliveyTime = dto.ActualDeliveryTime,
                 SpecialInstructions = dto.SpecialInstructions
             };
 

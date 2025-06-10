@@ -19,7 +19,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import PendingOrders from '@/components/PendingOrders.vue';
 import AcceptedOrders from '@/components/AcceptedOrders.vue';
 
@@ -28,20 +28,11 @@ type Order = {
   label: string;
   customer: string;
   status: string;
+  deliveryId: number | null;
 };
 
-function updateSelectedOrder(val: Order | null) {
-  selectedOrder.value = val;
-}
-
-const availableOrders = ref<Order[]>([
-  { id: 1, label: 'Pedido 1', customer: 'Juan', status: 'Pendiente' },
-  { id: 2, label: 'Pedido 2', customer: 'Ana', status: 'Pendiente' },
-  { id: 3, label: 'Pedido 3', customer: 'Luis', status: 'Pendiente' },
-]);
-
+const availableOrders = ref<Order[]>([]);
 const acceptedOrders = ref<Order[]>([]);
-
 const selectedOrder = ref<Order | null>(null);
 
 const orderHeaders = [
@@ -49,6 +40,10 @@ const orderHeaders = [
   { text: 'Cliente', value: 'customer' },
   { text: 'Estado', value: 'status' },
 ];
+
+function updateSelectedOrder(val: Order | null) {
+  selectedOrder.value = val;
+}
 
 function acceptOrder() {
   if (selectedOrder.value) {
@@ -58,4 +53,20 @@ function acceptOrder() {
     selectedOrder.value = null;
   }
 }
+
+// Cargar pedidos pendientes desde la API
+onMounted(async () => {
+  const res = await fetch('/api/Order');
+  const data = await res.json();
+  // Filtrar los pedidos con deliveryId === null
+  availableOrders.value = data
+    .filter((order: any) => order.deliveryId === null)
+    .map((order: any) => ({
+      id: order.id,
+      label: `Pedido ${order.id}`,
+      customer: order.customerName || order.customer || 'Desconocido',
+      status: order.status,
+      deliveryId: order.deliveryId,
+    }));
+});
 </script>
