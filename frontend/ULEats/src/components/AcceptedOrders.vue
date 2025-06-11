@@ -12,6 +12,9 @@
           {{ item.status }}
         </v-chip>
       </template>
+      <template #item.actions="{ item }">
+        <v-btn color="warning" @click="$emit('unassign-order', item)">Desasignar</v-btn>
+      </template>
     </v-data-table>
   </v-card>
 </template>

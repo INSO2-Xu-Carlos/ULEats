@@ -50,9 +50,9 @@ namespace backend.Controllers
 
         // PUT: /Order/{id}
         [HttpPut("{id}")]
-        public IActionResult Update(int id, [FromBody] Order order)
+        public IActionResult Update(int id, [FromBody] OrderCreateDTO dto)
         {
-            var updated = _orderService.UpdateOrder(id, order);
+            var updated = _orderService.UpdateOrder(id, dto);
             if (!updated)
                 return BadRequest("Bad request. Order failed to update");
             return Ok("Order updated succesfully");

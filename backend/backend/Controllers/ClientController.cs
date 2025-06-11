@@ -30,9 +30,20 @@ namespace backend.Controllers
                 return Unauthorized("Bad credentials");
 
             var customer = _clientService.GetCustomerByUserId(user.UserId);
+            var restaurant = _clientService.GetRestaurantByUserId(user.UserId);
+            var delivery = _clientService.GetDeliveryByUserId(user.UserId);
 
-            return Ok(new { UserId = user.UserId, UserType = user.UserType, CustomerId = customer?.CustomerId });
+            return Ok(new
+            {
+                UserId = user.UserId,
+                UserType = user.UserType,
+                CustomerId = customer?.CustomerId,
+                RestaurantId = restaurant?.RestaurantId,
+                DeliveryId = delivery?.DeliveryId
+            });
         }
+
+
 
         [HttpPost("register")]
         public IActionResult Register([FromBody] RegisterRequest request) {

@@ -64,6 +64,15 @@ namespace backend.Core
         {
             return _context.Customers.FirstOrDefault(c => c.UserId == userId);
         }
+        public Restaurant? GetRestaurantByUserId(int userId)
+        {
+            return _context.Restaurants.FirstOrDefault(r => r.UserId == userId);
+        }
+
+        public Delivery? GetDeliveryByUserId(int userId)
+        {
+            return _context.Deliveries.FirstOrDefault(d => d.UserId == userId);
+        }
 
     }
 }

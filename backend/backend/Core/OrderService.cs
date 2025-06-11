@@ -63,24 +63,15 @@ namespace backend.Core
             return null;
         }
 
-        public bool UpdateOrder(int id, Order updated)
+        public bool UpdateOrder(int id, OrderCreateDTO dto)
         {
             var affected = _context.Orders
                 .Where(o => o.OrderId == id)
-                .Set(o => o.RestaurantId, updated.RestaurantId)
-                .Set(o => o.DeliveryId, updated.DeliveryId)
-                .Set(o => o.OrderDate, updated.OrderDate)
-                .Set(o => o.Status, updated.Status)
-                .Set(o => o.DeliveryAddress, updated.DeliveryAddress)
-                .Set(o => o.Subtotal, updated.Subtotal)
-                .Set(o => o.DeliveryFee, updated.DeliveryFee)
-                .Set(o => o.TotalAmount, updated.TotalAmount)
-                .Set(o => o.EstimatedDeliveryTime, updated.EstimatedDeliveryTime)
-                .Set(o => o.ActualDeliveyTime, updated.ActualDeliveyTime)
-                .Set(o => o.SpecialInstructions, updated.SpecialInstructions)
+                .Set(o => o.DeliveryId, dto.DeliveryId)
+                .Set(o => o.Status, dto.Status)
                 .Update();
             return affected > 0;
-        }
+        } 
 
         public IEnumerable<Order> GetOrdersByDeliveryId(int deliveryId)
         {
