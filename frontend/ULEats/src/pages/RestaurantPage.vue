@@ -2,7 +2,13 @@
   <v-container fluid>
     <v-row>
       <v-col cols="8">
-        <h1 class="mb-4">Mis restaurantes</h1>
+        <div class="d-flex justify-space-between align-center mb-4">
+          <h1> My restaurants</h1>
+          <v-btn color="primary" @click="addRestaurant" icon>
+            <v-icon> mdi-plus</v-icon>
+          </v-btn>
+        </div>
+        
         <v-data-table
           :headers="restaurantHeaders"
           :items="restaurants"
@@ -20,7 +26,7 @@
         </v-data-table>
       </v-col>
       <v-col cols="4">
-        <h2 class="mb-4">Pedidos en curso</h2>
+        <h2 class="mb-4">Orders</h2>
         <v-data-table
           :headers="orderHeaders"
           :items="orders"
@@ -38,39 +44,80 @@
   </v-container>
 </template>
 
-<script setup lang="ts">
-import { ref } from 'vue';
+<script>
+export default {
+  name: "MyRestaurantPage",
+  data() {
+    return {
+      restaurants: [],
+      orders: [],
+      restaurantHeaders: [
+        { text: "Name", value: "name" },
+        { text: "Address", value: "address" },
+        { text: "Actions", value: "actions", sortable: false },
+      ],
+      orderHeaders: [
+        { text: "Client", value: "customerName" },
+        { text: "Total", value: "total" },
+        { text: "Status", value: "status" },
+      ],
+    };
+  },
+  methods: {
+  async fetchRestaurants() {
+    const userId = localStorage.getItem("user_id");
 
-const restaurantHeaders = [
-  { text: 'Nombre', value: 'name' },
-  { text: 'Dirección', value: 'address' },
-  { text: 'Acciones', value: 'actions', sortable: false },
-];
+    try {
+      const response = await fetch(`/api/Restaurant/ByUser/${userId}`);
+      if (response.ok) {
+        const data = await response.json();
 
-const restaurants = ref([
-  { id: 1, name: 'Restaurante A', address: 'Calle 1, Ciudad' },
-  { id: 2, name: 'Restaurante B', address: 'Calle 2, Ciudad' },
-]);
+        this.restaurants = data.map(r => ({
+          id: r.restaurantId,
+          name: r.name,
+          address: r.address
+        }));
+      } else {
+        this.restaurants = [];
+      }
+    } catch (err) {
+      this.restaurants = [];
+    }
+  },
+  async fetchOrders() {
+    this.orders = [];
+  },
 
-const orderHeaders = [
-  { text: 'Pedido', value: 'label' },
-  { text: 'Cliente', value: 'customer' },
-  { text: 'Estado', value: 'status' },
-];
+  addRestaurant() {
+    this.$router.push('/register/restaurant');
+  },
 
-const orders = ref([
-  { id: 1, label: 'Pedido 1', customer: 'Juan', status: 'En curso' },
-  { id: 2, label: 'Pedido 2', customer: 'Ana', status: 'En curso' },
-]);
+  editRestaurant(restaurant) {
+    this.$router.push(`/register/restaurant/${restaurant.id}`);
+  },
 
-function editRestaurant(item: any) {
-  // Lógica para editar restaurante
-  alert(`Editar restaurante: ${item.name}`);
-}
+  async deleteRestaurant(restaurant) {
+    if (confirm(`Are you sure you want to delete this restaurant: "${restaurant.name}"?`)) {
+      try {
+        const response = await fetch(`/api/Restaurant/${restaurant.id}`, {
+          method: "DELETE",
+        });
 
-function deleteRestaurant(item: any) {
-  // Lógica para eliminar restaurante
-  const idx = restaurants.value.findIndex(r => r.id === item.id);
-  if (idx !== -1) restaurants.value.splice(idx, 1);
-}
+        if (response.ok) {
+          this.fetchRestaurants();
+        } else {
+          throw new Error("Error deleting restaurant");
+        }
+      } catch (err) {
+        console.error("Delete error:", err);
+      }
+    }
+  },
+},
+  mounted() {
+    this.fetchRestaurants();
+    this.fetchOrders();
+  },
+};
 </script>
+

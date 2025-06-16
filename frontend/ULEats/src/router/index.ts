@@ -24,7 +24,7 @@ const routes = [
   { path: "/login", component: LoginPage },
   { path: "/register", component: RegisterPage },
   { path: "/register/client", component: RegisterCustomerPage },
-  { path: "/register/restaurant", component: RegisterRestaurantPage },
+  { path: "/register/restaurant/:id?", component: RegisterRestaurantPage, props: true },
   { path: "/register/delivery", component: RegisterDeliveryPage },
   { path: "/customer", component: CustomerPage },
   { path: "/restaurant", component: RestaurantPage },

@@ -100,10 +100,14 @@ select {
   width: 100%;
   padding: 8px;
   box-sizing: border-box;
+  background-color: white;
+  color : black;
 }
 button {
   padding: 10px 20px;
   font-size: 16px;
   cursor: pointer;
+  background-color :red;
+
 }
 </style>

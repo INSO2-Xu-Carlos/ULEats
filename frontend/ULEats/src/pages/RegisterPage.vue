@@ -137,10 +137,13 @@ label {
 }
 input[type="text"],
 input[type="email"],
+input[type="phonenumber"],
 input[type="password"] {
   width: 100%;
   padding: 8px;
   box-sizing: border-box;
+  color : black;
+  background-color: white;
 }
 input[type="radio"] {
   margin-right: 5px;
@@ -149,5 +152,7 @@ button {
   padding: 10px 20px;
   font-size: 16px;
   cursor: pointer;
+  background-color :red;
+
 }
 </style>
