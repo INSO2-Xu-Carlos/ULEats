@@ -1,6 +1,7 @@
 ﻿using backend.Model;
 using DataModel;
 using LinqToDB;
+using static LinqToDB.Reflection.Methods.LinqToDB;
 
 namespace backend.Core
 {
@@ -48,6 +49,10 @@ namespace backend.Core
             return _context.Restaurants.FirstOrDefault(r => r.RestaurantId == restaurantId);
         }
 
+        public IEnumerable<Restaurant> GetRestaurantsByUser(int user_id)
+        {
+            return _context.Restaurants.Where(r => r.UserId == user_id).ToList();
+        }
         // Obtener todos los restaurantes
         public IEnumerable<Restaurant> GetAllRestaurants()
         {
@@ -57,15 +62,43 @@ namespace backend.Core
         // Actualizar restaurante
         public bool UpdateRestaurant(Restaurant restaurant)
         {
-            var updated = _context.Update(restaurant);
-            return updated > 0;
+            var existing = _context.Restaurants.Find(restaurant.RestaurantId);
+            if (existing == null) return false;
+
+            existing.Name = restaurant.Name;
+            existing.Address = restaurant.Address;
+            existing.Phone = restaurant.Phone;
+            existing.Description = restaurant.Description;
+            existing.LogoUrl = restaurant.LogoUrl;
+            existing.UserId = restaurant.UserId;
+
+            _context.Update(existing);
+            return true;
         }
 
         // Eliminar restaurante
         public bool DeleteRestaurant(int restaurantId)
         {
-            var deleted = _context.Restaurants.Delete(r => r.RestaurantId == restaurantId);
-            return deleted > 0;
+            using var transaction = _context.BeginTransaction(); // Asegura atomicidad
+
+            try
+            {
+                var deletedProducts = _context.Products
+                    .Where(p => p.RestaurantId == restaurantId)
+                    .Delete();
+
+                var deletedRestaurant = _context.Restaurants
+                    .Delete(r => r.RestaurantId == restaurantId);
+
+                transaction.Commit();
+
+                return deletedRestaurant > 0;
+            }
+            catch
+            {
+                transaction.Rollback();
+                return false;
+            }
         }
     }
 }

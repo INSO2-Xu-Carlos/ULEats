@@ -49,6 +49,13 @@ namespace backend.Controllers
             return Ok(restaurants);
         }
 
+        [HttpGet("ByUser/{userId}")]
+        public IActionResult GetRestaurantsByUser(int userId)
+        {
+            var restaurants = _restaurantService.GetRestaurantsByUser(userId);
+            return Ok(restaurants);
+        }
+
         // PUT /Restaurant/{id}
         [HttpPut("{id}")]
         public IActionResult UpdateRestaurant(int id, [FromBody] Restaurant restaurant)
