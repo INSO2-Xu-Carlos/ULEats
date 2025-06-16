@@ -6,6 +6,9 @@
       <button class="cart-button" @click="showCart = true" title="Ver carrito">
         🛒
       </button>
+      <button class="orders-button" @click="showOrders = !showOrders">
+        Ver mis pedidos
+      </button>
     </header>
     <CartDrawer
       :visible="showCart"
@@ -27,6 +30,7 @@
           @select-product="addToCart"
         />
         <p v-else>Selecciona un restaurante para ver sus productos.</p>
+        <UserOrders v-if="showOrders" />
       </section>
     </main>
   </div>
@@ -36,6 +40,7 @@
 import RestaurantList from "@/components/RestaurantList.vue";
 import ProductList from "@/components/ProductList.vue";
 import CartDrawer from "@/components/CartDrawer.vue";
+import UserOrders from "@/components/UserOrders.vue";
 
 export default {
   name: "ClientPage",
@@ -43,6 +48,7 @@ export default {
     RestaurantList,
     ProductList,
     CartDrawer,
+    UserOrders,
   },
   data() {
     return {
@@ -52,6 +58,7 @@ export default {
       cart: [],
       showCart: false,
       cartRestaurantId: null,
+      showOrders: false,
     };
   },
   methods: {
@@ -189,6 +196,22 @@ export default {
   transition: background 0.2s;
 }
 .cart-button:hover {
+  background: #f0f0f0;
+}
+
+.orders-button {
+  position: absolute;
+  left: 20px;
+  top: 20px;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 16px;
+  padding: 8px 14px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.orders-button:hover {
   background: #f0f0f0;
 }
 
