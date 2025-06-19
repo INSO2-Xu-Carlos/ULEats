@@ -4,9 +4,12 @@
       <v-col cols="8">
         <div class="d-flex justify-space-between align-center mb-4">
           <h1> My restaurants</h1>
-          <v-btn color="primary" @click="addRestaurant" icon>
-            <v-icon> mdi-plus</v-icon>
-          </v-btn>
+          <div class="d-flex align-center">
+            <v-btn color="primary" @click="addRestaurant" icon>
+              <v-icon> mdi-plus</v-icon>
+            </v-btn>
+            <LogoutButton class="ml-4" />
+          </div>
         </div>
         
         <v-data-table

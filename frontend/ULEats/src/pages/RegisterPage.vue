@@ -59,6 +59,7 @@
       </div>
       <button type="submit">Register</button>
     </form>
+    <button class="back-button" @click="goHome">Volver a la página principal</button>
   </div>
 </template>
 
@@ -116,6 +117,9 @@ export default {
         alert("Error de red: " + error);
       }
     },
+    goHome() {
+      this.$router.push('/');
+    }
   },
   
 };

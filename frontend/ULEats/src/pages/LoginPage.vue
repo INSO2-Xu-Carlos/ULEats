@@ -12,6 +12,7 @@
       </div>
       <button type="submit">Log In</button>
     </form>
+    <button class="back-button" @click="goHome">Volver a la página principal</button>
   </div>
 </template>
 
@@ -75,6 +76,9 @@ export default {
         alert("Error de conexión con el servidor.");
       }
     },
+    goHome() {
+      this.$router.push('/');
+    }
   },
 };
 </script>

@@ -78,6 +78,11 @@ namespace backend.Core
             return _context.Orders.Where(o => o.DeliveryId == deliveryId).ToList();
         }
 
+        public IEnumerable<Order> GetOrdersByCustomerId(int customerId)
+        {
+            return _context.Orders.Where(o => o.CustomerId == customerId).ToList();
+        }
+
         public bool DeleteOrder(int id)
         {
             var affected = _context.Orders

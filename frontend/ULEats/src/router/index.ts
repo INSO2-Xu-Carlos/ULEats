@@ -5,8 +5,8 @@
  */
 
 // Composables
-import { createRouter, createWebHistory } from 'vue-router/auto'
-import { setupLayouts } from 'virtual:generated-layouts'
+import { createRouter, createWebHistory } from 'vue-router'
+//import { setupLayouts } from 'virtual:generated-layouts'
 //import { routes } from 'vue-router/auto-routes'
 import HomePage from "@/pages/HomePage.vue";
 import LoginPage from "@/pages/LoginPage.vue";
@@ -34,8 +34,33 @@ const routes = [
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
-  routes: setupLayouts(routes),
+  routes,
 })
+
+router.beforeEach((to, from, next) => {
+  const userId = localStorage.getItem('user_id');
+  const customerId = localStorage.getItem('customer_id');
+  const restaurantId = localStorage.getItem('restaurant_id');
+  const deliveryId = localStorage.getItem('delivery_id');
+
+  if (!userId && to.path !== '/login' && to.path !== '/register' && to.path !== '/') {
+    return next('/');
+  }
+
+  if (customerId && !to.path.startsWith('/customer') && to.path !== '/login' && to.path !== '/register') {
+    return next('/customer');
+  }
+
+  if (restaurantId && !to.path.startsWith('/restaurant') && to.path !== '/login' && to.path !== '/register') {
+    return next('/restaurant');
+  }
+
+  if (deliveryId && !to.path.startsWith('/delivery') && to.path !== '/login' && to.path !== '/register') {
+    return next('/delivery');
+  }
+
+  next();
+});
 
 // Workaround for https://github.com/vitejs/vite/issues/11804
 router.onError((err, to) => {

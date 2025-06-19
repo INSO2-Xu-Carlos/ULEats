@@ -1,6 +1,9 @@
 <template>
   <v-container>
-    <h1 class="mb-6">Repartidor</h1>
+    <div class="header-row">
+      <h1 class="mb-6">Repartidor</h1>
+      <LogoutButton class="logout-button" />
+    </div>
     <v-row>
       <v-col cols="12" md="6">
         <PendingOrders
