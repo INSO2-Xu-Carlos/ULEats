@@ -6,7 +6,6 @@
 // ---------------------------------------------------------------------------------------------------
 
 using LinqToDB.Mapping;
-using System.Collections.Generic;
 
 #pragma warning disable 1573, 1591
 #nullable enable
@@ -28,12 +27,6 @@ namespace DataModel
 		/// </summary>
 		[Association(CanBeNull = false, ThisKey = nameof(CustomerId), OtherKey = nameof(DataModel.Customer.CustomerId))]
 		public Customer Customer { get; set; } = null!;
-
-		/// <summary>
-		/// FK_order_items_id backreference
-		/// </summary>
-		[Association(ThisKey = nameof(OrderItemId), OtherKey = nameof(Order.OrderItemsId))]
-		public IEnumerable<Order> Orders { get; set; } = null!;
 
 		/// <summary>
 		/// FK_product_id

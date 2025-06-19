@@ -28,6 +28,12 @@ namespace DataModel
 		public IEnumerable<OrderItem> OrderItems { get; set; } = null!;
 
 		/// <summary>
+		/// FK_customer_id backreference
+		/// </summary>
+		[Association(ThisKey = nameof(CustomerId), OtherKey = nameof(Order.CustomerId))]
+		public IEnumerable<Order> Orders { get; set; } = null!;
+
+		/// <summary>
 		/// USER_ID
 		/// </summary>
 		[Association(CanBeNull = false, ThisKey = nameof(UserId), OtherKey = nameof(DataModel.User.UserId))]
