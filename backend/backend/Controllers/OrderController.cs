@@ -93,5 +93,14 @@ namespace backend.Controllers
 
             return Ok(orders);
         }
+        [HttpPut("{id}/status-delivery")]
+        public IActionResult PutStatusAndDelivery(int id, [FromBody] OrderStatusDeliveryUpdateDTO dto)
+        {
+            var updated = _orderService.UpdateOrderStatusAndDelivery(id, dto.Status, dto.DeliveryId);
+            if (!updated)
+                return NotFound("No se pudo actualizar la orden.");
+            return Ok("Orden actualizada correctamente.");
+        }
+
     }
 }

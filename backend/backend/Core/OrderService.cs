@@ -108,5 +108,14 @@ namespace backend.Core
 
             return orders;
         }
+        public bool UpdateOrderStatusAndDelivery(int orderId, string status, int? deliveryId)
+        {
+            var affected = _context.Orders
+                .Where(o => o.OrderId == orderId)
+                .Set(o => o.Status, status)
+                .Set(o => o.DeliveryId, deliveryId)
+                .Update();
+            return affected > 0;
+        }
     }
 }

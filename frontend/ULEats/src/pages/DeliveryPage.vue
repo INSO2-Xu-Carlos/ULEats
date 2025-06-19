@@ -58,7 +58,7 @@ function acceptOrder() {
     const orderToUpdate = {
       ...selectedOrder.value,
       deliveryId: deliveryId,
-      status: "preparing"
+      status: "En curso",
     };
 
     fetch(`/api/Order/${orderId}`, {
@@ -72,7 +72,7 @@ function acceptOrder() {
         const order = {
           id,
           label,
-          status: 'preparing',
+          status: 'En curso',
           deliveryId,
         };
         acceptedOrders.value.push(order);
@@ -86,19 +86,19 @@ function acceptOrder() {
 }
 
 function onWayOrder(order: Order) {
-  fetch(`/api/Order/${order.id}`, {
+  fetch(`/api/Order/${order.id}/status-delivery`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-      ...order,
-      status: "on_way"
+      status: "En camino",
+      deliveryId: order.deliveryId,
     }),
   })
   .then(res => {
     if (res.ok) {
       const idx = acceptedOrders.value.findIndex(o => o.id === order.id);
       if (idx !== -1) {
-        acceptedOrders.value[idx].status = "on_way";
+        acceptedOrders.value[idx].status = "En camino";
       }
     } else {
       alert("No se pudo actualizar el pedido a 'En camino'.");
@@ -107,22 +107,41 @@ function onWayOrder(order: Order) {
 }
 
 function deliveredOrder(order: Order) {
-  fetch(`/api/Order/${order.id}`, {
+  fetch(`/api/Order/${order.id}/status-delivery`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-      ...order,
-      status: "delivered"
+      status: "Entregado",
+      deliveryId: order.deliveryId,
     }),
   })
   .then(res => {
     if (res.ok) {
       const idx = acceptedOrders.value.findIndex(o => o.id === order.id);
       if (idx !== -1) {
-        acceptedOrders.value[idx].status = "delivered";
+        acceptedOrders.value[idx].status = "Entregado";
       }
     } else {
       alert("No se pudo actualizar el pedido a 'Entregado'.");
+    }
+  });
+}
+
+function unassignOrder(order: Order) {
+  fetch(`/api/Order/${order.id}/status-delivery`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      status: "Pendiente",
+      deliveryId: null,
+    }),
+  })
+  .then(res => {
+    if (res.ok) {
+      acceptedOrders.value = acceptedOrders.value.filter(o => o.id !== order.id);
+      availableOrders.value.push({ ...order, deliveryId: null, status: "Pendiente" });
+    } else {
+      alert("No se pudo desasignar el pedido.");
     }
   });
 }
@@ -151,24 +170,4 @@ onMounted(async () => {
       deliveryAddress: order.deliveryAddress || order.address || '',
     }));
 });
-
-function unassignOrder(order: Order) {
-  fetch(`/api/Order/${order.id}`, {
-    method: "PUT",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      ...order,
-      deliveryId: null,
-      status: "pending"
-    }),
-  })
-  .then(res => {
-    if (res.ok) {
-      acceptedOrders.value = acceptedOrders.value.filter(o => o.id !== order.id);
-      availableOrders.value.push({ ...order, deliveryId: null, status: "pending" });
-    } else {
-      alert("No se pudo desasignar el pedido.");
-    }
-  });
-}
 </script>

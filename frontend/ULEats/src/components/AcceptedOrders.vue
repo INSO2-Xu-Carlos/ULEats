@@ -7,21 +7,24 @@
       item-key="id"
     >
       <template #item.status="{ item }">
-        <v-chip :color="item.status === 'on_way' ? 'blue' : item.status === 'delivered' ? 'green' : 'orange'" dark>
-          {{ item.status === 'on_way' ? 'En camino' : item.status === 'delivered' ? 'Entregado' : item.status }}
+        <v-chip
+          :color="item.status === 'En camino' ? 'blue' : item.status === 'Entregado' ? 'green' : 'orange'"
+          dark
+        >
+          {{ item.status }}
         </v-chip>
       </template>
       <template #item.actions="{ item }">
         <v-btn
           color="info"
-          v-if="item.status !== 'on_way' && item.status !== 'delivered'"
+          v-if="item.status === 'En curso'"
           @click="$emit('on-way-order', item)"
         >
           En camino
         </v-btn>
         <v-btn
           color="success"
-          v-if="item.status === 'on_way'"
+          v-if="item.status === 'En camino'"
           @click="$emit('delivered-order', item)"
         >
           Entregado
