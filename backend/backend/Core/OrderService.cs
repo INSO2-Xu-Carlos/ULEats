@@ -90,5 +90,23 @@ namespace backend.Core
                 .Delete();
             return affected > 0;
         }
+
+        public List<object> GetOrdersByRestaurantUser(int userId)
+        {
+
+            var restaurant = _context.Restaurants.Where(r => r.UserId == userId).Select(r => r.RestaurantId).ToList();
+
+            var orders = _context.Orders.Where(o => restaurant.Contains(o.RestaurantId)).Select(o => new
+            {
+                o.OrderId,
+                Total = o.TotalAmount,
+                o.Status,
+                CustomerName = o.Customer != null && o.Customer.User != null ? o.Customer.User.FirstName : "?",
+                RestaurantName = o.Restaurant.Name,
+                RestaurantAddress = o.Restaurant.Address,
+            }).ToList<object>();
+
+            return orders;
+        }
     }
 }
