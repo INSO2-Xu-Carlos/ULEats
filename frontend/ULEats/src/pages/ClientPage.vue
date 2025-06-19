@@ -9,6 +9,7 @@
       <button class="orders-button" @click="showOrders = !showOrders">
         Ver mis pedidos
       </button>
+      <LogoutButton class="logout-button" />
     </header>
     <CartDrawer
       :visible="showCart"
