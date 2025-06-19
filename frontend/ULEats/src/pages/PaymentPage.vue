@@ -83,13 +83,19 @@ export default {
       };
       console.log(orderPayload);
       
-      await fetch("/api/Order", {
+      const orderResponse = await fetch("/api/Order", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(orderPayload),
       });
 
-      this.$router.push("/customer");
+      if (orderResponse.ok) {
+        await fetch(`/api/OrderItem/byCustomer/${customerId}`, {
+          method: "DELETE",
+        });
+
+        this.$router.push("/customer");
+      }
     },
   },
    mounted() {

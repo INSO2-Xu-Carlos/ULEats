@@ -60,6 +60,12 @@ namespace backend.Core
             return updated > 0;
         }
 
+        public bool DeleteOrderItemsByCustomerId(int customerId)
+        {
+            var deleted = _context.OrderItems.Delete(oi => oi.CustomerId == customerId);
+            return deleted > 0;
+        }
+
         // Eliminar OrderItem
         public bool DeleteOrderItem(int orderItemId)
         {

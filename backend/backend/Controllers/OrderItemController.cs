@@ -80,5 +80,15 @@ namespace backend.Controllers
             var items = _orderItemService.GetOrderItemsByCustomer(customerId);
             return Ok(items);
         }
+
+        [HttpDelete("byCustomer/{customerId}")]
+        public IActionResult DeleteOrderItemsByCustomerId(int customerId)
+        {
+            var deleted = _orderItemService.DeleteOrderItemsByCustomerId(customerId);
+            if (!deleted)
+                return NotFound("No se encontraron items para ese cliente.");
+            return Ok("OrderItems eliminados correctamente.");
+        }
+
     }
 }
