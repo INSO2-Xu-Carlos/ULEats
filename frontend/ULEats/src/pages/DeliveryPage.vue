@@ -16,12 +16,13 @@
           :acceptedOrders="acceptedOrders"
           :orderHeaders="orderHeaders"
           @unassign-order="unassignOrder"
+          @on-way-order="onWayOrder"
+          @delivered-order="deliveredOrder"
         />
       </v-col>
     </v-row>
   </v-container>
 </template>
-
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import PendingOrders from '@/components/PendingOrders.vue';
@@ -71,7 +72,7 @@ function acceptOrder() {
         const order = {
           id,
           label,
-          status: 'En curso',
+          status: 'preparing',
           deliveryId,
         };
         acceptedOrders.value.push(order);
@@ -84,6 +85,47 @@ function acceptOrder() {
   }
 }
 
+function onWayOrder(order: Order) {
+  fetch(`/api/Order/${order.id}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      ...order,
+      status: "on_way"
+    }),
+  })
+  .then(res => {
+    if (res.ok) {
+      const idx = acceptedOrders.value.findIndex(o => o.id === order.id);
+      if (idx !== -1) {
+        acceptedOrders.value[idx].status = "on_way";
+      }
+    } else {
+      alert("No se pudo actualizar el pedido a 'En camino'.");
+    }
+  });
+}
+
+function deliveredOrder(order: Order) {
+  fetch(`/api/Order/${order.id}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      ...order,
+      status: "delivered"
+    }),
+  })
+  .then(res => {
+    if (res.ok) {
+      const idx = acceptedOrders.value.findIndex(o => o.id === order.id);
+      if (idx !== -1) {
+        acceptedOrders.value[idx].status = "delivered";
+      }
+    } else {
+      alert("No se pudo actualizar el pedido a 'Entregado'.");
+    }
+  });
+}
 
 onMounted(async () => {
   const deliveryId = Number(localStorage.getItem("delivery_id"));
