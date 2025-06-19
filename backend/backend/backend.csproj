@@ -11,6 +11,7 @@
 
   <ItemGroup>
     <Compile Remove="Core\RegisterService.cs" />
+    <Compile Remove="Model\OrderDTO.cs" />
     <Compile Remove="Model\OrderTrackingDTO.cs" />
     <Compile Remove="Model\PaymentCreateTDO.cs" />
     <Compile Remove="Model\RestaurantDTO.cs" />

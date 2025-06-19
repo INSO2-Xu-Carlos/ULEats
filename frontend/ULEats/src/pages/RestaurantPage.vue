@@ -38,18 +38,42 @@
               {{ item.status }}
             </v-chip>
           </template>
+          <template #item.total="{ item }">
+            {{ formatCurrency(item.total) }}
+          </template>
+          <template #item.actions="{ item }">
+            <v-btn icon @click="viewOrder(item)">
+              <v-icon>mdi-eye</v-icon>
+            </v-btn>
+          </template>
         </v-data-table>
+        <div v-if="selectedOrder" class="mt-4 pa-4 elevation-2 rounded bg-grey-lighten-4">
+          <h3>Order Details</h3>
+          <p><strong>Client:</strong> {{ selectedOrder.customerName }}</p>
+          <p><strong>Total:</strong> {{ formatCurrency(selectedOrder.total) }}</p>
+          <p><strong>Status:</strong> {{ selectedOrder.status }}</p>
+          <p><strong>Restaurant:</strong> {{ selectedOrder.restaurantName }}</p>
+          <p><strong>Address:</strong> {{ selectedOrder.restaurantAddress }}</p>
+
+          <!-- Agrega más detalles aquí si quieres -->
+          <v-btn color="secondary" class="mt-2" @click="selectedOrder = null">
+            Close
+          </v-btn>
+        </div>
       </v-col>
     </v-row>
   </v-container>
 </template>
 
 <script>
+import { ca } from 'vuetify/locale';
+
 export default {
   name: "MyRestaurantPage",
   data() {
     return {
       restaurants: [],
+      selectedOrder: null,
       orders: [],
       restaurantHeaders: [
         { text: "Name", value: "name" },
@@ -58,9 +82,14 @@ export default {
       ],
       orderHeaders: [
         { text: "Client", value: "customerName" },
+        { text: "Address", value: "address "},
+        { text: "Restaurant", value: "restaurantName" },
         { text: "Total", value: "total" },
         { text: "Status", value: "status" },
-      ],
+        { text: "Actions", value: "actions", sortable: false },
+
+],
+
     };
   },
   methods: {
@@ -85,7 +114,27 @@ export default {
     }
   },
   async fetchOrders() {
-    this.orders = [];
+    const userId = localStorage.getItem("user_id");
+
+    try {
+      const response = await fetch(`/api/Order/ByOwner/${userId}`);
+      if (!response.ok) {
+        this.orders = [];
+        return;
+      }
+
+      const data = await response.json();
+      this.orders = data.map(o => ({
+      id: o.orderId,
+      customerName: o.customerName,
+      total: o.total,
+      status: o.status,
+      restaurantName: o.restaurantName,
+      restaurantAddress: o.restaurantAddress
+}));
+    } catch (err) {
+      this.orders = [];
+    }
   },
 
   addRestaurant() {
@@ -113,7 +162,19 @@ export default {
       }
     }
   },
+  formatCurrency(value) {
+    if( typeof value !== 'number') return value;
+    return value.toLocaleString("es-ES", {
+      style: 'currency',
+      currency: 'EUR',
+    });
+  },
+  viewOrder(order) {
+    this.selectedOrder = order;
+  }
 },
+
+
   mounted() {
     this.fetchRestaurants();
     this.fetchOrders();

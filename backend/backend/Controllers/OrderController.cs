@@ -74,5 +74,17 @@ namespace backend.Controllers
             var orders = _orderService.GetOrdersByDeliveryId(deliveryId);
             return Ok(orders);
         }
+
+        [HttpGet("ByOwner/{userId}")]
+        public IActionResult GetOrdersByRestaurantUser(int userId)
+        {
+            var orders = _orderService.GetOrdersByRestaurantUser(userId);
+            if(orders == null || !orders.Any())
+            {
+                return NotFound(new List<Order>());
+            }
+
+            return Ok(orders);
+        }
     }
 }
