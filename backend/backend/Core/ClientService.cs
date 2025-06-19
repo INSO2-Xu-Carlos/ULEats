@@ -1,7 +1,8 @@
 ﻿using DataModel;
 using LinqToDB;
 using LinqToDB.SqlQuery;
-
+using Microsoft.AspNetCore.Identity;
+using System.Runtime.InteropServices;
 namespace backend.Core
 {
     public class ClientService
@@ -19,8 +20,12 @@ namespace backend.Core
         /// <returns>true if login is valid, else if login is not valid</returns>
         public User? LoginAndGetUser(string email, string password)
         {
-            var user = _context.Users.FirstOrDefault(u => u.Email == email && u.Password == password);
-            return user;
+            var user = _context.Users.FirstOrDefault(u => u.Email == email);
+            if (user == null) return null;
+
+            var hasher = new PasswordHasher<User>(); 
+            var result = hasher.VerifyHashedPassword(user, user.Password, password);
+            return result == PasswordVerificationResult.Success ? user : null;
         }
 
 
@@ -40,15 +45,17 @@ namespace backend.Core
             var exists = _context.Users.Any(u => u.Email == email);
             if (exists) return null;
 
+            var hasher = new PasswordHasher<User>();    
             var user = new User
             {
                 FirstName = name,
-                Password = password,
                 Email = email,
                 LastName = surname,
                 Phone = phone,
                 UserType = usertype
             };
+
+            user.Password = hasher.HashPassword(user, password);
 
             var userId = _context.InsertWithInt32Identity(user);
             user.UserId = userId;
