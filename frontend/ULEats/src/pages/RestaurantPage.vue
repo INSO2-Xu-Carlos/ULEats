@@ -19,6 +19,9 @@
           item-key="id"
         >
           <template #item.actions="{ item }">
+            <v-btn icon @click="addProduct(item)">
+              <v-icon color="green"> mdi-plus-box</v-icon>
+            </v-btn>
             <v-btn icon @click="editRestaurant(item)">
               <v-icon>mdi-pencil</v-icon>
             </v-btn>
@@ -57,12 +60,25 @@
           <p><strong>Status:</strong> {{ selectedOrder.status }}</p>
           <p><strong>Restaurant:</strong> {{ selectedOrder.restaurantName }}</p>
           <p><strong>Address:</strong> {{ selectedOrder.restaurantAddress }}</p>
-
-          <!-- Agrega más detalles aquí si quieres -->
           <v-btn color="secondary" class="mt-2" @click="selectedOrder = null">
             Close
           </v-btn>
         </div>
+        <v-dialog v-model="showAddProductDialog" max-width="500px">
+          <v-card>
+            <v-card-title>Añadir Producto</v-card-title>
+            <v-card-text>
+              <v-text-field v-model="newProduct.name" label="Nombre del producto" />
+              <v-text-field v-model="newProduct.price" label="Precio" type="number" />
+              <v-text-field v-model="newProduct.quantity" label="Cantidad" type="number" />
+            </v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn text @click="showAddProductDialog = false">Cancelar</v-btn>
+              <v-btn color="primary" @click="addProductToRestaurant">Guardar</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
       </v-col>
     </v-row>
   </v-container>
@@ -77,6 +93,12 @@ export default {
     return {
       restaurants: [],
       selectedOrder: null,
+      showAddProductDialog: false,
+      newProduct: {
+        name: '',
+        price: 0,
+        quantity: 1,
+      },
       orders: [],
       restaurantHeaders: [
         { text: "Name", value: "name" },
