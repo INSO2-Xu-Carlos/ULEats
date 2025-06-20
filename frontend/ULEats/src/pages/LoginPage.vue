@@ -86,25 +86,70 @@ export default {
 <style scoped>
 .login-page {
   max-width: 400px;
-  margin: 0 auto;
-  padding: 20px;
+  margin: 40px auto;
+  padding: 32px 24px;
   text-align: center;
+  background: #f6f8fa; /* Fondo claro pero diferente al blanco */
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(25, 118, 210, 0.08);
 }
+
 .form-group {
-  margin-bottom: 15px;
+  margin-bottom: 18px;
 }
+
 label {
   display: block;
-  margin-bottom: 5px;
+  margin-bottom: 7px;
+  color: #1976d2;
+  font-weight: 600;
+  text-align: left;
 }
+
 input {
   width: 100%;
-  padding: 8px;
+  padding: 10px;
   box-sizing: border-box;
+  border: 1px solid #bdbdbd;
+  border-radius: 6px;
+  background: #fff;
+  font-size: 1rem;
+  margin-bottom: 4px;
+  color: #111; /* <-- Añadido para texto negro */
 }
+
+input:focus {
+  border-color: #1976d2;
+  outline: none;
+}
+
 button {
   padding: 10px 20px;
   font-size: 16px;
   cursor: pointer;
+  background: linear-gradient(90deg, #43e97b 0%, #38f9d7 100%);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  margin-top: 10px;
+  transition: background 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 8px rgba(67, 233, 123, 0.08);
+}
+
+button:hover {
+  background: linear-gradient(90deg, #38f9d7 0%, #43e97b 100%);
+  box-shadow: 0 4px 16px rgba(67, 233, 123, 0.16);
+}
+
+.back-button {
+  background: #eee;
+  color: #1976d2;
+  border: 1px solid #bdbdbd;
+  margin-top: 18px;
+}
+
+.back-button:hover {
+  background: #e3f2fd;
 }
 </style>

@@ -1,15 +1,17 @@
 <template>
   <div class="client-page">
     <header class="header">
+      <div class="header-buttons">
+        <LogoutButton class="logout-button" />
+        <button class="cart-button" @click="showCart = true" title="Ver carrito">
+          🛒
+        </button>
+        <button class="orders-button" @click="showOrders = !showOrders">
+          Ver mis pedidos
+        </button>
+      </div>
       <h1>Bienvenido a ULEats</h1>
       <p>Explora los restaurantes disponibles para tu pedido.</p>
-      <button class="cart-button" @click="showCart = true" title="Ver carrito">
-        🛒
-      </button>
-      <button class="orders-button" @click="showOrders = !showOrders">
-        Ver mis pedidos
-      </button>
-      <LogoutButton class="logout-button" />
     </header>
     <CartDrawer
       :visible="showCart"
@@ -27,11 +29,19 @@
         <h2>Productos del restaurante</h2>
         <ProductList
           :products="products"
-          v-if="selectedRestaurant"
+          v-if="selectedRestaurant && products.length"
           @select-product="addToCart"
         />
+        <p
+          v-else-if="selectedRestaurant && !products.length"
+          class="no-products-message"
+        >
+          No hay productos disponibles para este restaurante.
+        </p>
         <p v-else>Selecciona un restaurante para ver sus productos.</p>
-        <UserOrders v-if="showOrders" />
+        <div v-if="showOrders" class="user-orders-wrapper-blue">
+          <UserOrders />
+        </div>
       </section>
     </main>
   </div>
@@ -42,6 +52,7 @@ import RestaurantList from "@/components/RestaurantList.vue";
 import ProductList from "@/components/ProductList.vue";
 import CartDrawer from "@/components/CartDrawer.vue";
 import UserOrders from "@/components/UserOrders.vue";
+import LogoutButton from "@/components/LogoutButton.vue";
 
 export default {
   name: "ClientPage",
@@ -50,6 +61,7 @@ export default {
     ProductList,
     CartDrawer,
     UserOrders,
+    LogoutButton,
   },
   data() {
     return {
@@ -184,10 +196,15 @@ export default {
   position: relative;
 }
 
+.header-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
 .cart-button {
-  position: absolute;
-  right: 20px;
-  top: 20px;
   background: #fff;
   border: 1px solid #ccc;
   border-radius: 50%;
@@ -201,9 +218,6 @@ export default {
 }
 
 .orders-button {
-  position: absolute;
-  left: 20px;
-  top: 20px;
   background: #fff;
   border: 1px solid #ccc;
   border-radius: 8px;
@@ -211,9 +225,29 @@ export default {
   padding: 8px 14px;
   cursor: pointer;
   transition: background 0.2s;
+  color: #111;
 }
 .orders-button:hover {
   background: #f0f0f0;
+}
+
+.user-orders-wrapper-blue {
+  background: #1976d2;
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(25, 118, 210, 0.08);
+  padding: 24px;
+  margin-top: 20px;
+}
+
+.user-orders-wrapper-blue,
+.user-orders-wrapper-blue * {
+  color:#6386a9 !important;
+}
+
+.no-products-message {
+  color: #111;
+  font-weight: 500;
+  margin-top: 12px;
 }
 
 .main-content {
