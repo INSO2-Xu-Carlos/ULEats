@@ -266,3 +266,13 @@ export default {
 };
 </script>
 
+<style scoped>
+.v-data-table,
+.v-data-table * {
+  color: #6386a9 !important;
+}
+
+.v-chip {
+  color: #fff !important;
+}
+</style>
