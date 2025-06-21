@@ -18,6 +18,7 @@ import CustomerPage from '@/pages/ClientPage.vue';
 import RestaurantPage from '@/pages/RestaurantPage.vue';
 import DeliveryPage from '@/pages/DeliveryPage.vue';
 import PaymentPage from '@/pages/PaymentPage.vue';
+import ProductForm from '@/pages/ProductForm.vue';
 
 const routes = [
   { path: '/', component: HomePage },
@@ -26,6 +27,7 @@ const routes = [
   { path: "/register/client", component: RegisterCustomerPage },
   { path: "/register/restaurant/:id?", component: RegisterRestaurantPage, props: true },
   { path: "/register/delivery", component: RegisterDeliveryPage },
+  { path: "/register/product/:id", component: ProductForm, props: true },
   { path: "/customer", component: CustomerPage },
   { path: "/restaurant", component: RestaurantPage },
   { path: "/delivery", component: DeliveryPage },

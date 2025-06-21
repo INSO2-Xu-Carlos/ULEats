@@ -57,12 +57,12 @@ namespace backend.Controllers
 
         // PUT: /Product/{id}
         [HttpPut("{id}")]
-        public IActionResult Update(int id, [FromBody] Product product)
+        public IActionResult Update(int id, [FromBody] ProductCreateDto dto)
         {
-            var updated = _productService.UpdateProduct(id, product);
-            if (!updated)
-                return BadRequest("Bad request. Product failed to update");
-            return Ok("Product updated succesfully");
+            var updated = _productService.UpdateProduct(id, dto);
+            if (!updated) return NotFound();
+
+            return NoContent();
         }
 
         // DELETE: /Product/{id}

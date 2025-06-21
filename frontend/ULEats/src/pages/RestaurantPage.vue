@@ -19,7 +19,7 @@
           item-key="id"
         >
           <template #item.actions="{ item }">
-            <v-btn icon @click="addProduct(item)">
+            <v-btn icon @click="openProductDialog(item)">
               <v-icon color="green"> mdi-plus-box</v-icon>
             </v-btn>
             <v-btn icon @click="editRestaurant(item)">
@@ -64,19 +64,29 @@
             Close
           </v-btn>
         </div>
-        <v-dialog v-model="showAddProductDialog" max-width="500px">
+        <v-dialog v-model="showProductDialog" max-width="800px">
           <v-card>
-            <v-card-title>Añadir Producto</v-card-title>
+            <v-card-title class="d-flex justify-space-between">
+              Productos de {{ selectedRestaurant?.name }}
+              <v-btn icon @click="closeProductDialog"><v-icon>mdi-close</v-icon></v-btn>
+            </v-card-title>
             <v-card-text>
-              <v-text-field v-model="newProduct.name" label="Nombre del producto" />
-              <v-text-field v-model="newProduct.price" label="Precio" type="number" />
-              <v-text-field v-model="newProduct.quantity" label="Cantidad" type="number" />
+              <v-data-table
+                :headers="productHeaders"
+                :items="products"
+                item-key="productId"
+              >
+                <template #item.actions="{ item }">
+                  <v-btn icon @click="editProduct(item)">
+                    <v-icon>mdi-pencil</v-icon>
+                  </v-btn>
+                  <v-btn icon @click="deleteProduct(item)">
+                    <v-icon color="red">mdi-delete</v-icon>
+                  </v-btn>
+                </template>
+              </v-data-table>
+              <v-btn color="primary" class="mt-3" @click="newProduct">Añadir Producto</v-btn>
             </v-card-text>
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn text @click="showAddProductDialog = false">Cancelar</v-btn>
-              <v-btn color="primary" @click="addProductToRestaurant">Guardar</v-btn>
-            </v-card-actions>
           </v-card>
         </v-dialog>
       </v-col>
@@ -93,12 +103,8 @@ export default {
     return {
       restaurants: [],
       selectedOrder: null,
-      showAddProductDialog: false,
-      newProduct: {
-        name: '',
-        price: 0,
-        quantity: 1,
-      },
+      showProductDialog: false,
+
       orders: [],
       restaurantHeaders: [
         { text: "Name", value: "name" },
@@ -112,9 +118,14 @@ export default {
         { text: "Total", value: "total" },
         { text: "Status", value: "status" },
         { text: "Actions", value: "actions", sortable: false },
-
-],
-
+      ],
+      products: [],
+      productHeaders: [
+        { text: 'Nombre', value: 'name' },
+        { text: 'Precio', value: 'price' },
+        { text: 'Descripción', value: 'description' },
+        { text: 'Acciones', value: 'actions', sortable: false },
+      ],
     };
   },
   methods: {
@@ -196,7 +207,55 @@ export default {
   },
   viewOrder(order) {
     this.selectedOrder = order;
-  }
+  },
+  openProductDialog(restaurant) {
+    this.selectedRestaurant = restaurant;
+    this.fetchProducts(restaurant.id);
+    this.showProductDialog = true;
+  },
+  closeProductDialog() {
+    this.showProductDialog = false;
+    this.selectedRestaurant = null;
+    this.products = [];
+  },
+  async fetchProducts(restaurantId) {
+    try {
+      const response = await fetch(`/api/Product/ByRestaurant/${restaurantId}`);
+      if (response.ok) {
+        this.products = await response.json();
+      } else {
+        this.products = [];
+      }
+    } catch (err) {
+      console.error(err);
+      this.products = [];
+    }
+  },
+  async deleteProduct(product) {
+    if (confirm(`¿Eliminar producto "${product.name}"?`)) {
+      try {
+        const response = await fetch(`/api/Product/${product.productId}`, {
+          method: 'DELETE'
+        });
+        if (response.ok) {
+          this.fetchProducts(this.selectedRestaurant.id);
+        } else {
+          alert('Error al eliminar');
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    }
+  },
+  newProduct() {
+    this.$router.push(`/register/product/new?restaurantId=${this.selectedRestaurant.id}`);
+  },
+
+  editProduct(product) {
+    this.$router.push(`/register/product/${product.productId}`);
+  },
+
+
 },
 
 

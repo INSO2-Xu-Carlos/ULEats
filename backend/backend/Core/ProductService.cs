@@ -27,7 +27,7 @@ namespace backend.Core
                 Category = dto.Category,
                 IsAvailable = dto.IsAvailable
             };
-
+            if (dto.Price < 0) return null;
             var id = _context.InsertWithInt32Identity(product);
             if (id > 0)
             {
@@ -63,19 +63,24 @@ namespace backend.Core
             return null;
         }
 
-        public bool UpdateProduct(int id, Product updated)
+        public bool UpdateProduct(int id, ProductCreateDto dto)
         {
-            var affected = _context.Products
-                .Where(p => p.ProductId == id)
-                .Set(p => p.RestaurantId, updated.RestaurantId)
-                .Set(p => p.Name, updated.Name)
-                .Set(p => p.Description, updated.Description)
-                .Set(p => p.Price, updated.Price)
-                .Set(p => p.ImageUrl, updated.ImageUrl)
-                .Set(p => p.Category, updated.Category)
-                .Set(p => p.IsAvailable, updated.IsAvailable)
-                .Update();
-            return affected > 0;
+            var existing = _context.Products.Find(id);
+            if (existing == null) return false;
+
+            existing.RestaurantId = dto.RestaurantId;
+            existing.Name = dto.Name;
+            existing.Description = dto.Description;
+            existing.Price = dto.Price;
+            existing.ImageUrl = dto.ImageUrl;
+            existing.Category = dto.Category;
+            existing.IsAvailable = dto.IsAvailable;
+
+            _context.Update(existing);
+            return true;
+
+
+
         }
 
         public bool DeleteProduct(int id)
