@@ -50,18 +50,18 @@ export default {
         const data = await response.json();
         console.log("Respuesta del backend:", data);
 
-        if (data.userId) {
-          localStorage.setItem("user_id", data.userId);
+        if (data.UserId) {
+          localStorage.setItem("user_id", data.UserId);
         }
-        if(data.customerId) {
-          localStorage.setItem("customer_id", data.customerId);
+        if (data.CustomerId) {
+          localStorage.setItem("customer_id", data.CustomerId);
         }
-        if(data.deliveryId) {
-          localStorage.setItem("delivery_id", data.deliveryId);
+        if (data.DeliveryId) {
+          localStorage.setItem("delivery_id", data.DeliveryId);
         }
-        if (data.userType) {
-          localStorage.setItem("user_type", data.userType);
-          this.userType = data.userType;
+        if (data.UserType) {
+          localStorage.setItem("user_type", data.UserType);
+          this.userType = data.UserType;
         }
         
         alert("Login exitoso");
