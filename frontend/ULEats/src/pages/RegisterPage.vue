@@ -94,7 +94,7 @@ export default {
             "Content-Type": "application/json",
           },
           body: JSON.stringify(payload),
-        });
+        }).text();
 
         if (!response.ok) {
           const errorText = await response.text();
