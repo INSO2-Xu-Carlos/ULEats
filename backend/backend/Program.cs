@@ -47,11 +47,28 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+var port = Environment.GetEnvironmentVariable("PORT") ?? "8080"; 
+app.Run($"http://*:{port}");
 
 app.UseHttpsRedirection();
+
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy =>
+    {
+        policy.AllowAnyOrigin()
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
+
+app.UseCors();
 
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MapGet("/", () => "Backend ULEats está activo");
+app.MapGet("/health", () => Results.Ok("Healthy"));
 
 app.Run();
