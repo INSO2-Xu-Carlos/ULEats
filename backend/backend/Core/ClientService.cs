@@ -63,19 +63,39 @@ namespace backend.Core
             return user;
         }
 
+        /// <summary>
+        /// Get user by id
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns>The user with given id if any </returns>
         public User? getUserById(int userId)
         {
             return _context.GetTable<User>().FirstOrDefault(u => u.UserId == userId);
         }
+        /// <summary>
+        /// Get customer by user id
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns> Customer with given id if any </returns>
         public Customer? GetCustomerByUserId(int userId)
         {
             return _context.Customers.FirstOrDefault(c => c.UserId == userId);
         }
+        /// <summary>
+        /// Get restaurant by user id
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns> Restaurant from a user with given id if any </returns>
         public Restaurant? GetRestaurantByUserId(int userId)
         {
             return _context.Restaurants.FirstOrDefault(r => r.UserId == userId);
         }
 
+        /// <summary>
+        /// Get delivery by user id
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns> Delivery by given id if any </returns>
         public Delivery? GetDeliveryByUserId(int userId)
         {
             return _context.Deliveries.FirstOrDefault(d => d.UserId == userId);
