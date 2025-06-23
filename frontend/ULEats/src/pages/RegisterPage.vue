@@ -101,7 +101,12 @@ export default {
           alert("Error: " + errorText);
           return;
         }
-        const data = await response.json();
+        const text = await response.text();
+        let data = {};
+        if (text) {
+          data = JSON.parse(text);
+        }
+        console.log("Respuesta del backend:", data);
         if (data.userId) {
           localStorage.setItem("user_id", data.userId);
         }
