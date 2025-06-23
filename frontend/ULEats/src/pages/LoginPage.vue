@@ -73,7 +73,7 @@ export default {
           this.$router.push("/delivery");
         }
       } catch (err) {
-        alert("Error de conexión con el servidor."+ err);
+        alert("Error de conexión con el servidor.");
       }
     },
     goHome() {
