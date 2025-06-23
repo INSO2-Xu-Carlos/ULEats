@@ -47,7 +47,16 @@ export default {
           return;
         }
 
-        const data = await response.json();
+        const text = await response.text();
+        let data = {};
+        if (text) {
+          try {
+            data = JSON.parse(text);
+          } catch (e) {
+            alert("Respuesta inesperada del servidor.");
+            return;
+          }
+        }
         console.log("Respuesta del backend:", data);
 
         if (data.userId) {
