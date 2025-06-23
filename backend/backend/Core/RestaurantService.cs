@@ -14,10 +14,13 @@ namespace backend.Core
             _context = context;
         }
 
-        // Crear un nuevo restaurante
+        /// <summary>
+        /// Add a new Restaurant to the database
+        /// </summary>
+        /// <param name="dto"></param>
+        /// <returns> The restaurant added if added correctly </returns>
         public Restaurant? AddRestaurant(RestaurantCreateDto dto)
         {
-            // Obtener el último ID existente (o 0 si la tabla está vacía)
             int lastId = _context.Restaurants
                 .OrderByDescending(r => r.RestaurantId)
                 .Select(r => r.RestaurantId)
@@ -34,7 +37,6 @@ namespace backend.Core
                 LogoUrl = dto.LogoUrl
             };
 
-            // Insertar el restaurante con el ID asignado manualmente
             var rows = _context.Insert(restaurant);
             if (rows > 0)
             {
@@ -43,23 +45,40 @@ namespace backend.Core
             return null;
         }
 
-        // Obtener restaurante por ID
+        /// <summary>
+        /// Get a Restaurant by its ID
+        /// </summary>
+        /// <param name="restaurantId"></param>
+        /// <returns> Restaurant with given id if any </returns>
         public Restaurant? GetRestaurantById(int restaurantId)
         {
             return _context.Restaurants.FirstOrDefault(r => r.RestaurantId == restaurantId);
         }
 
+        /// <summary>
+        /// Get all Restaurants by User ID
+        /// </summary>
+        /// <param name="user_id"></param>
+        /// <returns> list with all restaurants from a user </returns>
         public IEnumerable<Restaurant> GetRestaurantsByUser(int user_id)
         {
             return _context.Restaurants.Where(r => r.UserId == user_id).ToList();
         }
-        // Obtener todos los restaurantes
+
+        /// <summary>
+        /// Get all Restaurants
+        /// </summary>
+        /// <returns> list with all restaurants </returns>
         public IEnumerable<Restaurant> GetAllRestaurants()
         {
             return _context.Restaurants.ToList();
         }
 
-        // Actualizar restaurante
+        /// <summary>
+        /// Update an existing Restaurant
+        /// </summary>
+        /// <param name="restaurant"></param>
+        /// <returns> true if updated correctly </returns>
         public bool UpdateRestaurant(Restaurant restaurant)
         {
             var existing = _context.Restaurants.Find(restaurant.RestaurantId);
@@ -76,10 +95,14 @@ namespace backend.Core
             return true;
         }
 
-        // Eliminar restaurante
+        /// <summary>
+        /// Delete a Restaurant by its ID
+        /// </summary>
+        /// <param name="restaurantId"></param>
+        /// <returns> true if deleted correctly </returns>
         public bool DeleteRestaurant(int restaurantId)
         {
-            using var transaction = _context.BeginTransaction(); // Asegura atomicidad
+            using var transaction = _context.BeginTransaction(); 
 
             try
             {
