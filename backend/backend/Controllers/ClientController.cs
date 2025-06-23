@@ -13,9 +13,7 @@ namespace backend.Controllers
     [Route("[controller]")]
     public class ClientController : ControllerBase
     {
-
         private readonly ClientService _clientService;
-        //private readonly ILogger<ClientController> _logger;
 
         public ClientController(ClientService clientService)
         {
@@ -27,7 +25,7 @@ namespace backend.Controllers
         {
             var user = _clientService.LoginAndGetUser(request.Email, request.Password);
             if (user == null)
-                return Unauthorized("Bad credentials");
+                return Unauthorized(new { error = "Bad credentials" });
 
             var customer = _clientService.GetCustomerByUserId(user.UserId);
             var restaurant = _clientService.GetRestaurantByUserId(user.UserId);
@@ -43,36 +41,35 @@ namespace backend.Controllers
             });
         }
 
-
-
         [HttpPost("register")]
-        public IActionResult Register([FromBody] RegisterRequest request) {
+        public IActionResult Register([FromBody] RegisterRequest request)
+        {
             if (string.IsNullOrWhiteSpace(request.Email) ||
                 string.IsNullOrWhiteSpace(request.Password) ||
                 string.IsNullOrWhiteSpace(request.FirstName) ||
                 string.IsNullOrWhiteSpace(request.LastName) ||
                 string.IsNullOrWhiteSpace(request.UserType))
             {
-                return BadRequest("All filds must be filled!");
+                return BadRequest(new { error = "All fields must be filled!" });
             }
 
             var emailPattern = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
 
             if (!Regex.IsMatch(request.Email, emailPattern))
             {
-                return BadRequest("Email is not in a valid pattern");
+                return BadRequest(new { error = "Email is not in a valid pattern" });
             }
-            if(request.Phone != null && request.Phone.Length != 9) 
+            if (request.Phone != null && request.Phone.Length != 9)
             {
-                return BadRequest("Phone must have 9 digits!");
+                return BadRequest(new { error = "Phone must have 9 digits!" });
             }
             if (request.Password.Length < 8)
             {
-                return BadRequest("Password is weak, please enter more characters");
+                return BadRequest(new { error = "Password is weak, please enter more characters" });
             }
             var user = _clientService.RegisterAndGetUser(request.FirstName, request.Password, request.Email, request.LastName, request.Phone, request.UserType);
             if (user == null)
-                return BadRequest("Email is already registered");
+                return BadRequest(new { error = "Email is already registered" });
 
             return Ok(new { UserId = user.UserId });
         }
@@ -92,8 +89,6 @@ namespace backend.Controllers
             public string UserType { get; set; }
             public string LastName { get; set; }
         }
-
-        
-       
     }
+
 }

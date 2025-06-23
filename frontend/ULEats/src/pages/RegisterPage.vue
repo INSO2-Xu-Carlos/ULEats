@@ -101,16 +101,7 @@ export default {
           alert("Error: " + errorText);
           return;
         }
-        const text = await response.text();
-        let data = {};
-        if (text) {
-          try {
-            data = JSON.parse(text);
-          } catch (e) {
-            alert("Respuesta inesperada del servidor.");
-            return;
-          }
-        }
+        const data = await response.json();
         if (data.userId) {
           localStorage.setItem("user_id", data.userId);
         }
