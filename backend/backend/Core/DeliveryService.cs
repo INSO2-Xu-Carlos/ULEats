@@ -14,6 +14,11 @@ namespace backend.Core
             _context = context;
         }
 
+        /// <summary>
+        /// Add a new delivery to the database
+        /// </summary>
+        /// <param name="dto"></param>
+        /// <returns> The delivery added if added correctly </returns>
         public Delivery? AddDelivery(DeliveryCreateDTO dto)
         {
             var delivery = new Delivery
@@ -33,16 +38,30 @@ namespace backend.Core
             return null;
         }
 
+        /// <summary>
+        /// Get a delivery by its ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns> Delivery with given id if any </returns>
         public Delivery? GetDeliveryById(int id)
         {
             return _context.Deliveries.FirstOrDefault(d => d.DeliveryId == id);
         }
 
+        /// <summary>
+        /// Get all deliveries
+        /// </summary>
+        /// <returns> List with all deliveries </returns>
         public IEnumerable<Delivery> GetAllDeliveries()
         {
             return _context.Deliveries.ToList();
         }
 
+        /// <summary>
+        /// Create a new delivery in the database
+        /// </summary>
+        /// <param name="delivery"></param>
+        /// <returns> The delivery if create correctly </returns>
         public Delivery? CreateDelivery(Delivery delivery)
         {
             var id = _context.InsertWithInt32Identity(delivery);
@@ -54,6 +73,12 @@ namespace backend.Core
             return null;
         }
 
+        /// <summary>
+        /// Update an existing delivery in the database
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="updated"></param>
+        /// <returns> true if updated correctly </returns>
         public bool UpdateDelivery(int id, Delivery updated)
         {
             var affected = _context.Deliveries
@@ -66,6 +91,11 @@ namespace backend.Core
             return affected > 0;
         }
 
+        /// <summary>
+        /// Delete a delivery by its ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns> true if its deleted correctly </returns>
         public bool DeleteDelivery(int id)
         {
             var affected = _context.Deliveries
