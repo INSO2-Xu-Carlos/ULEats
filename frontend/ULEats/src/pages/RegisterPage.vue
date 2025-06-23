@@ -94,14 +94,23 @@ export default {
             "Content-Type": "application/json",
           },
           body: JSON.stringify(payload),
-        }).text();
+        });
 
         if (!response.ok) {
           const errorText = await response.text();
           alert("Error: " + errorText);
           return;
         }
-        const data = await response.json();
+        const text = await response.text();
+        let data = {};
+        if (text) {
+          try {
+            data = JSON.parse(text);
+          } catch (e) {
+            alert("Respuesta inesperada del servidor.");
+            return;
+          }
+        }
         if (data.userId) {
           localStorage.setItem("user_id", data.userId);
         }
