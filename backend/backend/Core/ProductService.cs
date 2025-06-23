@@ -15,6 +15,11 @@ namespace backend.Core
             _context = context;
         }
 
+        /// <summary>
+        /// Add a new Product to the database
+        /// </summary>
+        /// <param name="dto"></param>
+        /// <returns> The product added if added correctly </returns>
         public Product? AddProduct(ProductCreateDto dto)
         {
             var product = new Product
@@ -37,21 +42,40 @@ namespace backend.Core
             return null;
         }
 
+        /// <summary>
+        /// Get a Product by its ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns> Product with given id if any </returns>
         public Product? GetProductById(int id)
         {
             return _context.Products.FirstOrDefault(p => p.ProductId == id);
         }
 
+        /// <summary>
+        /// Get all Products
+        /// </summary>
+        /// <returns> list with all products </returns>
         public IEnumerable<Product> GetAllProducts()
         {
             return _context.Products.ToList();
         }
 
+        /// <summary>
+        /// Get all Products by Restaurant ID
+        /// </summary>
+        /// <param name="restaurantId"></param>
+        /// <returns> list wiht all products from a restaurant </returns>
         public IEnumerable<Product> GetProductsByRestaurant(int restaurantId)
         {
             return _context.Products.Where(p => p.RestaurantId == restaurantId).ToList();
         }
 
+        /// <summary>
+        /// Create a new Product in the database
+        /// </summary>
+        /// <param name="product"></param>
+        /// <returns> The product created </returns>
         public Product? CreateProduct(Product product)
         {
             var id = _context.InsertWithInt32Identity(product);
@@ -63,6 +87,12 @@ namespace backend.Core
             return null;
         }
 
+        /// <summary>
+        /// Update an existing Product in the database
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="dto"></param>
+        /// <returns> true if updated correctly </returns>
         public bool UpdateProduct(int id, ProductCreateDto dto)
         {
             var existing = _context.Products.Find(id);
@@ -79,10 +109,13 @@ namespace backend.Core
             _context.Update(existing);
             return true;
 
-
-
         }
 
+        /// <summary>
+        /// Delete a Product by its ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns> true if deleted correctly </returns>
         public bool DeleteProduct(int id)
         {
             var affected = _context.Products
