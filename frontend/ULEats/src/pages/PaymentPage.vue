@@ -133,7 +133,24 @@ export default {
   flex-direction: column;
   gap: 30px;
   max-width: 500px;
-  margin: 0 auto;
-  padding: 30px 0;
+  margin: 40px auto;
+  padding: 32px 24px;
+  background: #f6f8fa;
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(25, 118, 210, 0.08);
+}
+
+.payment-page,
+.payment-page * {
+  color: #111 !important;
+}
+
+.cart-total,
+.total-amount,
+.total {
+  font-size: 1.2em;
+  font-weight: bold;
+  color: #1976d2 !important;
+  margin-top: 12px;
 }
 </style>

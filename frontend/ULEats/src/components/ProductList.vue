@@ -63,6 +63,7 @@ export default {
   display: flex;
   justify-content: space-between;
   font-weight: bold;
+  color: #000
 }
 .product-name {
   color: #333;

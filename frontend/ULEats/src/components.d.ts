@@ -10,7 +10,6 @@ declare module 'vue' {
     AcceptedOrders: typeof import('./components/AcceptedOrders.vue')['default']
     AppFooter: typeof import('./components/AppFooter.vue')['default']
     CartDrawer: typeof import('./components/CartDrawer.vue')['default']
-    LogIn: typeof import('./components/LogIn.vue')['default']
     LoginButton: typeof import('./components/LoginButton.vue')['default']
     LogoutButton: typeof import('./components/LogoutButton.vue')['default']
     NewAddress: typeof import('./components/NewAddress.vue')['default']
