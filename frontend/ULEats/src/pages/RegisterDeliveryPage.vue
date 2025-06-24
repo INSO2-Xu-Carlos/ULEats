@@ -71,6 +71,7 @@ export default {
         const data = await response.json();
         if (data.userId) {
           localStorage.setItem("user_id", data.userId);
+          localStorage.setItem("delivery_id", data.deliveryId);
         }
 
         alert("Repartidor registrado correctamente.");

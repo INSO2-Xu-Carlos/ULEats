@@ -105,6 +105,7 @@ export default {
         const data = await response.json();
         if (data.userId) {
           localStorage.setItem("user_id", data.userId);
+          localStorage.setItem("restaurant_id", data.restaurantId);
         }
 
         alert("Restaurante registrado correctamente.");

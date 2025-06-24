@@ -48,6 +48,7 @@ export default {
         const data = await response.json(); 
         if (data.userId) {
           localStorage.setItem("user_id", data.userId);
+          localStorage.setItem("customer_id", data.customerId);
         }
 
         alert("Dirección guardada correctamente.");
