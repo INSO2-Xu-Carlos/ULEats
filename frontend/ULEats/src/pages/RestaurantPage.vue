@@ -133,7 +133,7 @@ export default {
     const userId = localStorage.getItem("user_id");
 
     try {
-      const response = await fetch(`/api/Restaurant/ByUser/${userId}`);
+      const response = await fetch(`https://uleats-8xnb.onrender.com/Restaurant/ByUser/${userId}`);
       if (response.ok) {
         const data = await response.json();
 
@@ -153,7 +153,7 @@ export default {
     const userId = localStorage.getItem("user_id");
 
     try {
-      const response = await fetch(`/api/Order/ByOwner/${userId}`);
+      const response = await fetch(`https://uleats-8xnb.onrender.com/Order/ByOwner/${userId}`);
       if (!response.ok) {
         this.orders = [];
         return;
@@ -184,7 +184,7 @@ export default {
   async deleteRestaurant(restaurant) {
     if (confirm(`Are you sure you want to delete this restaurant: "${restaurant.name}"?`)) {
       try {
-        const response = await fetch(`/api/Restaurant/${restaurant.id}`, {
+        const response = await fetch(`https://uleats-8xnb.onrender.com/Restaurant/${restaurant.id}`, {
           method: "DELETE",
         });
 
@@ -220,7 +220,7 @@ export default {
   },
   async fetchProducts(restaurantId) {
     try {
-      const response = await fetch(`/api/Product/ByRestaurant/${restaurantId}`);
+      const response = await fetch(`https://uleats-8xnb.onrender.com/Product/ByRestaurant/${restaurantId}`);
       if (response.ok) {
         this.products = await response.json();
       } else {
@@ -234,7 +234,7 @@ export default {
   async deleteProduct(product) {
     if (confirm(`¿Eliminar producto "${product.name}"?`)) {
       try {
-        const response = await fetch(`/api/Product/${product.productId}`, {
+        const response = await fetch(`https://uleats-8xnb.onrender.com/Product/${product.productId}`, {
           method: 'DELETE'
         });
         if (response.ok) {

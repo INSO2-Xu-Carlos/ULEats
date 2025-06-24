@@ -51,7 +51,7 @@ export default {
       };
 
       try {
-        const response = await fetch("/api/Delivery", {
+        const response = await fetch("https://uleats-8xnb.onrender.com/Delivery", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

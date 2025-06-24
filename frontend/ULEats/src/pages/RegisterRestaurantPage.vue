@@ -57,7 +57,7 @@ export default {
 
     async loadRestaurantData(id) {
       try {
-        const response = await fetch(`/api/Restaurant/${id}`);
+        const response = await fetch(`https://uleats-8xnb.onrender.com/Restaurant/${id}`);
         if (!response.ok) throw new Error("error");
 
         const data = await response.json();
@@ -82,7 +82,7 @@ export default {
       };
 
       try {
-        const response = await fetch("/api/Restaurant", {
+        const response = await fetch("https://uleats-8xnb.onrender.com/Restaurant", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -122,7 +122,7 @@ export default {
       };
 
       try {
-        const response = await fetch(`/api/Restaurant/${this.restaurantId}`, {
+        const response = await fetch(`https://uleats-8xnb.onrender.com/Restaurant/${this.restaurantId}`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",

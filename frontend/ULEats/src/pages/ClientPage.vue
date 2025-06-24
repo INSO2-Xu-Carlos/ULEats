@@ -77,7 +77,7 @@ export default {
   methods: {
     async fetchRestaurants() {
       try {
-        const response = await fetch("/api/Restaurant");
+        const response = await fetch("https://uleats-8xnb.onrender.com/Restaurant");
         if (response.ok) {
           this.restaurants = await response.json();
         } else {
@@ -90,7 +90,7 @@ export default {
     async handleSelectRestaurant(restaurant) {
       this.selectedRestaurant = restaurant;
       try {
-        const response = await fetch(`/api/Product/ByRestaurant/${restaurant.restaurantId || restaurant.id}`);
+        const response = await fetch(`https://uleats-8xnb.onrender.com/Product/ByRestaurant/${restaurant.restaurantId || restaurant.id}`);
         if (response.ok) {
           this.products = await response.json();
         } else {
@@ -139,7 +139,7 @@ export default {
         return;
       }
       try {
-        const response = await fetch(`/api/OrderItem/byCustomer/${customerId}`);
+        const response = await fetch(`https://uleats-8xnb.onrender.com/OrderItem/byCustomer/${customerId}`);
         if (response.ok) {
           this.cart = await response.json();
           if (this.cart.length > 0) {
@@ -158,7 +158,7 @@ export default {
     },
     async removeFromCart(item) {
       try {
-        const response = await fetch(`/api/OrderItem/${item.orderItemId || item.id}`, {
+        const response = await fetch(`https://uleats-8xnb.onrender.com/OrderItem/${item.orderItemId || item.id}`, {
           method: "DELETE",
         });
         if (response.ok) {

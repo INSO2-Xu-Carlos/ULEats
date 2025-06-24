@@ -43,7 +43,7 @@ export default {
 
       let restaurantId = null;
       try {
-        const res = await fetch(`/api/Product/${productId}`);
+        const res = await fetch(`https://uleats-8xnb.onrender.com/Product/${productId}`);
         if (res.ok) {
           const product = await res.json();
           restaurantId = product.restaurantId;
@@ -83,7 +83,7 @@ export default {
       };
       console.log(orderPayload);
       
-      const orderResponse = await fetch("/api/Order", {
+      const orderResponse = await fetch("https://uleats-8xnb.onrender.com/Order", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(orderPayload),
