@@ -19,7 +19,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowFrontend",
         builder =>
         {
-            builder.WithOrigins("https://uleats-1.onrender.com/")
+            builder.WithOrigins("https://uleats-1.onrender.com")
                    .AllowAnyHeader()
                    .AllowAnyMethod();
         });
