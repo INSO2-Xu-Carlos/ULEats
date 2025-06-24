@@ -129,7 +129,10 @@ export default {
         unitPrice: product.price,
         productName: product.name
       };
-      await fetch("/api/OrderItem", {
+      const baseUrl = import.meta.env.PROD
+        ? 'https://uleats-8xnb.onrender.com'
+        : '/api';
+      await fetch(`${baseUrl}/OrderItem`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
