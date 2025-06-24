@@ -77,7 +77,10 @@ export default {
   methods: {
     async fetchRestaurants() {
       try {
-        const response = await fetch("/api/Restaurant");
+        const baseUrl = import.meta.env.PROD
+        ? 'https://uleats-8xnb.onrender.com'
+        : '/api';
+        const response = await fetch(`${baseUrl}/Restaurant`);
         if (response.ok) {
           this.restaurants = await response.json();
         } else {
@@ -88,9 +91,12 @@ export default {
       }
     },
     async handleSelectRestaurant(restaurant) {
+      const baseUrl = import.meta.env.PROD
+        ? 'https://uleats-8xnb.onrender.com'
+        : '/api';
       this.selectedRestaurant = restaurant;
       try {
-        const response = await fetch(`/api/Product/ByRestaurant/${restaurant.restaurantId || restaurant.id}`);
+        const response = await fetch(`${baseUrl}/Product/ByRestaurant/${restaurant.restaurantId || restaurant.id}`);
         if (response.ok) {
           this.products = await response.json();
         } else {
@@ -132,6 +138,9 @@ export default {
       this.fetchCartItems();
     },
     async fetchCartItems() {
+      const baseUrl = import.meta.env.PROD
+        ? 'https://uleats-8xnb.onrender.com'
+        : '/api';
       const customerId = localStorage.getItem("customer_id");
       if (!customerId) {
         this.cart = [];
@@ -139,7 +148,7 @@ export default {
         return;
       }
       try {
-        const response = await fetch(`/api/OrderItem/byCustomer/${customerId}`);
+        const response = await fetch(`${baseUrl}/OrderItem/byCustomer/${customerId}`);
         if (response.ok) {
           this.cart = await response.json();
           if (this.cart.length > 0) {
@@ -158,7 +167,10 @@ export default {
     },
     async removeFromCart(item) {
       try {
-        const response = await fetch(`/api/OrderItem/${item.orderItemId || item.id}`, {
+        const baseUrl = import.meta.env.PROD
+        ? 'https://uleats-8xnb.onrender.com'
+        : '/api';
+        const response = await fetch(`${baseUrl}/OrderItem/${item.orderItemId || item.id}`, {
           method: "DELETE",
         });
         if (response.ok) {

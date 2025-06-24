@@ -234,7 +234,10 @@ export default {
   async deleteProduct(product) {
     if (confirm(`¿Eliminar producto "${product.name}"?`)) {
       try {
-        const response = await fetch(`/api/Product/${product.productId}`, {
+        const baseUrl = import.meta.env.PROD
+        ? 'https://uleats-8xnb.onrender.com'
+        : '/api';
+        const response = await fetch(`${baseUrl}/Product/${product.productId}`, {
           method: 'DELETE'
         });
         if (response.ok) {

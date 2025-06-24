@@ -43,7 +43,10 @@ export default {
 
       let restaurantId = null;
       try {
-        const res = await fetch(`/api/Product/${productId}`);
+        const baseUrl = import.meta.env.PROD
+        ? 'https://uleats-8xnb.onrender.com'
+        : '/api';
+        const res = await fetch(`${baseUrl}/Product/${productId}`);
         if (res.ok) {
           const product = await res.json();
           restaurantId = product.restaurantId;
@@ -81,16 +84,20 @@ export default {
         actualDeliveryTime: new Date().toISOString(),
         specialInstructions: "",
       };
-      console.log(orderPayload);
-      
-      const orderResponse = await fetch("/api/Order", {
+      const baseUrl = import.meta.env.PROD
+        ? 'https://uleats-8xnb.onrender.com'
+        : '/api';
+      const orderResponse = await fetch(`${baseUrl}/Order`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(orderPayload),
       });
 
       if (orderResponse.ok) {
-        await fetch(`/api/OrderItem/byCustomer/${customerId}`, {
+        const baseUrl = import.meta.env.PROD
+        ? 'https://uleats-8xnb.onrender.com'
+        : '/api';
+        await fetch(`${baseUrl}/OrderItem/byCustomer/${customerId}`, {
           method: "DELETE",
         });
 
@@ -104,7 +111,11 @@ export default {
       this.cartItems = [];
       return;
     }
-    fetch(`/api/OrderItem/byCustomer/${customerId}`)
+    const baseUrl = import.meta.env.PROD
+        ? 'https://uleats-8xnb.onrender.com'
+        : '/api';
+        
+    fetch(`${baseUrl}/OrderItem/byCustomer/${customerId}`)
       .then(res => res.ok ? res.json() : [])
       .then(data => {
         this.cartItems = data || [];
@@ -112,7 +123,7 @@ export default {
       .catch(() => {
         this.cartItems = [];
       });
-    fetch(`/api/Customer/${customerId}`)
+    fetch(`${baseUrl}/Customer/${customerId}`)
       .then(res => res.ok ? res.json() : {})
       .then(data => {
         console.log("Datos del customer:", data);

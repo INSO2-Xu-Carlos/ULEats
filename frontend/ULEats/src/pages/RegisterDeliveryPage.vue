@@ -51,7 +51,10 @@ export default {
       };
 
       try {
-        const response = await fetch("/api/Delivery", {
+        const baseUrl = import.meta.env.PROD
+        ? 'https://uleats-8xnb.onrender.com'
+        : '/api';
+        const response = await fetch(`${baseUrl}/Delivery`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

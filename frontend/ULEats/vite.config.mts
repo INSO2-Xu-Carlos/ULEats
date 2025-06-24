@@ -76,7 +76,6 @@ export default defineConfig({
         target: 'https://uleats-8xnb.onrender.com', // production
         changeOrigin: true,
         secure: false,
-        // Opcional: reescribe /api a la raíz del backend
         rewrite: (path) => path.replace(/^\/api/, ''),
       },
     },

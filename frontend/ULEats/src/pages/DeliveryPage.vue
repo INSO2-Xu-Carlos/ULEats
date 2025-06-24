@@ -63,8 +63,10 @@ function acceptOrder() {
       deliveryId: deliveryId,
       status: "En curso",
     };
-
-    fetch(`/api/Order/${orderId}`, {
+    const baseUrl = import.meta.env.PROD
+        ? 'https://uleats-8xnb.onrender.com'
+        : '/api';
+    fetch(`${baseUrl}/Order/${orderId}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(orderToUpdate),
@@ -89,7 +91,11 @@ function acceptOrder() {
 }
 
 function onWayOrder(order: Order) {
-  fetch(`/api/Order/${order.id}/status-delivery`, {
+  const baseUrl = import.meta.env.PROD
+        ? 'https://uleats-8xnb.onrender.com'
+        : '/api';
+
+  fetch(`${baseUrl}/Order/${order.id}/status-delivery`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
@@ -110,7 +116,10 @@ function onWayOrder(order: Order) {
 }
 
 function deliveredOrder(order: Order) {
-  fetch(`/api/Order/${order.id}/status-delivery`, {
+  const baseUrl = import.meta.env.PROD
+        ? 'https://uleats-8xnb.onrender.com'
+        : '/api';
+  fetch(`${baseUrl}/Order/${order.id}/status-delivery`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
@@ -131,7 +140,10 @@ function deliveredOrder(order: Order) {
 }
 
 function unassignOrder(order: Order) {
-  fetch(`/api/Order/${order.id}/status-delivery`, {
+  const baseUrl = import.meta.env.PROD
+        ? 'https://uleats-8xnb.onrender.com'
+        : '/api';
+  fetch(`${baseUrl}/Order/${order.id}/status-delivery`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
@@ -151,7 +163,10 @@ function unassignOrder(order: Order) {
 
 onMounted(async () => {
   const deliveryId = Number(localStorage.getItem("delivery_id"));
-  const res = await fetch('/api/Order');
+  const baseUrl = import.meta.env.PROD
+        ? 'https://uleats-8xnb.onrender.com'
+        : '/api';
+  const res = await fetch(`${baseUrl}/Order`);
   const data = await res.json();
 
   availableOrders.value = data

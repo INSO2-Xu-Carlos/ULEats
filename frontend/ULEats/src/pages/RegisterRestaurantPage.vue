@@ -122,7 +122,10 @@ export default {
       };
 
       try {
-        const response = await fetch(`/api/Restaurant/${this.restaurantId}`, {
+        const baseUrl = import.meta.env.PROD
+        ? 'https://uleats-8xnb.onrender.com'
+        : '/api';
+        const response = await fetch(`${baseUrl}/Restaurant/${this.restaurantId}`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
