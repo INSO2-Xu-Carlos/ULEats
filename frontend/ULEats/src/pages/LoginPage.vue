@@ -33,7 +33,7 @@ export default {
       };
 
       try {
-        const response = await fetch("/api/Client/login", {
+        const response = await fetch("/Client/login", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -73,7 +73,7 @@ export default {
           this.$router.push("/delivery");
         }
       } catch (err) {
-        alert("Error de conexión con el servidor.");
+        alert("Error de conexión con el servidor. " +err.message);
       }
     },
     goHome() {
