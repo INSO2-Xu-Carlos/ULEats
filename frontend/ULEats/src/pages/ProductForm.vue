@@ -76,7 +76,7 @@ export default {
   methods: {
     async loadProductData(id) {
       try {
-        const response = await fetch(`https://uleats-8xnb.onrender.com/Product/${id}`);
+        const response = await fetch(`/api/Product/${id}`);
         if (!response.ok) throw new Error("Error al cargar producto");
         const data = await response.json();
         this.name = data.name;
@@ -106,13 +106,13 @@ export default {
       try {
         let response;
         if (this.isEdit) {
-          response = await fetch(`https://uleats-8xnb.onrender.com/Product/${this.productId}`, {
+          response = await fetch(`/api/Product/${this.productId}`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(payload),
           });
         } else {
-          response = await fetch("https://uleats-8xnb.onrender.com/Product", {
+          response = await fetch("/api/Product", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(payload),

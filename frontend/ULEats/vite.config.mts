@@ -72,7 +72,8 @@ export default defineConfig({
     port: 3000,
     proxy: {
       '/api': {
-        target: 'https://localhost:44311',
+        //target: 'https://localhost:44311', develop
+        target: 'https://uleats-8xnb.onrender.com', // production
         changeOrigin: true,
         secure: false,
         // Opcional: reescribe /api a la raíz del backend

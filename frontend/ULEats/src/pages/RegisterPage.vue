@@ -88,7 +88,7 @@ export default {
       };
       
       try {
-        const response = await fetch("https://uleats-8xnb.onrender.com/Client/register", {
+        const response = await fetch("/api/Client/register", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

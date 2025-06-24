@@ -151,7 +151,7 @@ function unassignOrder(order: Order) {
 
 onMounted(async () => {
   const deliveryId = Number(localStorage.getItem("delivery_id"));
-  const res = await fetch('https://uleats-8xnb.onrender.com/Order');
+  const res = await fetch('/api/Order');
   const data = await res.json();
 
   availableOrders.value = data

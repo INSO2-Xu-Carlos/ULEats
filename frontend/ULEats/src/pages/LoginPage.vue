@@ -33,7 +33,7 @@ export default {
       };
 
       try {
-        const response = await fetch("https://uleats-8xnb.onrender.com/Client/login", {
+        const response = await fetch("/api/Client/login", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
