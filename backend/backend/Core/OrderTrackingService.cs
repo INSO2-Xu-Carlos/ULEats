@@ -13,7 +13,11 @@ namespace backend.Core
             _context = context;
         }
 
-        // Crear un nuevo tracking
+        /// <summary>
+        /// Add a new OrderTracking to the database
+        /// </summary>
+        /// <param name="dto"></param>
+        /// <returns> The orderTracking added if added correctly </returns>
         public OrderTracking? AddOrderTracking(OrderTrackingCreateDto dto)
         {
             var tracking = new OrderTracking
@@ -34,26 +38,41 @@ namespace backend.Core
             return null;
         }
 
-        // Obtener tracking por ID
+        /// <summary>
+        /// Get an OrderTracking by its ID
+        /// </summary>
+        /// <param name="trackingId"></param>
+        /// <returns> OrderTracking with given id if any </returns>
         public OrderTracking? GetOrderTrackingById(int trackingId)
         {
             return _context.OrderTrackings.FirstOrDefault(t => t.TrackingId == trackingId);
         }
 
-        // Obtener todos los trackings
+        /// <summary>
+        /// Get all OrderTrackings
+        /// </summary>
+        /// <returns> list with all OrderTrackings </returns>
         public IEnumerable<OrderTracking> GetAllOrderTrackings()
         {
             return _context.OrderTrackings.ToList();
         }
 
-        // Actualizar tracking
+        /// <summary>
+        /// Update an existing OrderTracking
+        /// </summary>
+        /// <param name="tracking"></param>
+        /// <returns> true if updated correctly </returns>
         public bool UpdateOrderTracking(OrderTracking tracking)
         {
             var updated = _context.Update(tracking);
             return updated > 0;
         }
 
-        // Eliminar tracking
+        /// <summary>
+        /// Delete an OrderTracking by its ID
+        /// </summary>
+        /// <param name="trackingId"></param>
+        /// <returns> true if deleted correctly </returns>
         public bool DeleteOrderTracking(int trackingId)
         {
             var deleted = _context.OrderTrackings.Delete(t => t.TrackingId == trackingId);

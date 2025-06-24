@@ -13,7 +13,11 @@ namespace backend.Core
             _context = context;
         }
 
-        // Crear un nuevo pago
+        /// <summary>
+        /// Add a new Payment to the database
+        /// </summary>
+        /// <param name="dto"></param>
+        /// <returns> The payment added if added correctly </returns>
         public Payment? AddPayment(PaymentCreateDto dto)
         {
             var payment = new Payment
@@ -35,26 +39,41 @@ namespace backend.Core
             return null;
         }
 
-        // Obtener pago por ID
+        /// <summary>
+        /// Get a Payment by its ID
+        /// </summary>
+        /// <param name="paymentId"></param>
+        /// <returns> Payment with given id if any </returns>
         public Payment? GetPaymentById(int paymentId)
         {
             return _context.Payments.FirstOrDefault(p => p.PaymentId == paymentId);
         }
 
-        // Obtener todos los pagos
+        /// <summary>
+        /// Get all Payments
+        /// </summary>
+        /// <returns> list with all payments </returns>
         public IEnumerable<Payment> GetAllPayments()
         {
             return _context.Payments.ToList();
         }
 
-        // Actualizar pago
+        /// <summary>
+        /// Update an existing Payment
+        /// </summary>
+        /// <param name="payment"></param>
+        /// <returns> true if updated correctly </returns>
         public bool UpdatePayment(Payment payment)
         {
             var updated = _context.Update(payment);
             return updated > 0;
         }
 
-        // Eliminar pago
+        /// <summary>
+        /// Delete a Payment by its ID
+        /// </summary>
+        /// <param name="paymentId"></param>
+        /// <returns> true if deleted correctly </returns>
         public bool DeletePayment(int paymentId)
         {
             var deleted = _context.Payments.Delete(p => p.PaymentId == paymentId);
