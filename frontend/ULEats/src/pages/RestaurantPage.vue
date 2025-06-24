@@ -133,7 +133,10 @@ export default {
     const userId = localStorage.getItem("user_id");
 
     try {
-      const response = await fetch(`/api/Restaurant/ByUser/${userId}`);
+      const baseUrl = import.meta.env.PROD
+        ? 'https://uleats-8xnb.onrender.com'
+        : '/api';
+      const response = await fetch(`${baseUrl}/Restaurant/ByUser/${userId}`);
       if (response.ok) {
         const data = await response.json();
 
@@ -153,7 +156,10 @@ export default {
     const userId = localStorage.getItem("user_id");
 
     try {
-      const response = await fetch(`/api/Order/ByOwner/${userId}`);
+      const baseUrl = import.meta.env.PROD
+        ? 'https://uleats-8xnb.onrender.com'
+        : '/api';
+      const response = await fetch(`${baseUrl}/Order/ByOwner/${userId}`);
       if (!response.ok) {
         this.orders = [];
         return;
@@ -184,7 +190,10 @@ export default {
   async deleteRestaurant(restaurant) {
     if (confirm(`Are you sure you want to delete this restaurant: "${restaurant.name}"?`)) {
       try {
-        const response = await fetch(`/api/Restaurant/${restaurant.id}`, {
+        const baseUrl = import.meta.env.PROD
+        ? 'https://uleats-8xnb.onrender.com'
+        : '/api';
+        const response = await fetch(`${baseUrl}/Restaurant/${restaurant.id}`, {
           method: "DELETE",
         });
 
@@ -220,7 +229,10 @@ export default {
   },
   async fetchProducts(restaurantId) {
     try {
-      const response = await fetch(`/api/Product/ByRestaurant/${restaurantId}`);
+      const baseUrl = import.meta.env.PROD
+        ? 'https://uleats-8xnb.onrender.com'
+        : '/api';
+      const response = await fetch(`${baseUrl}/Product/ByRestaurant/${restaurantId}`);
       if (response.ok) {
         this.products = await response.json();
       } else {
