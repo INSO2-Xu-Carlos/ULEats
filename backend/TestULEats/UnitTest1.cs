@@ -52,7 +52,7 @@ namespace TestULEats
             var result = _controller.Register(request);
 
             var badRequest = Assert.IsType<BadRequestObjectResult>(result);
-            Assert.Equal("All filds must be filled!", badRequest.Value);
+            Assert.Equal("All fields must be filled!", badRequest.Value);
         }
 
         [Fact]

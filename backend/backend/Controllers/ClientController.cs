@@ -47,26 +47,26 @@ namespace backend.Controllers
                 string.IsNullOrWhiteSpace(request.LastName) ||
                 string.IsNullOrWhiteSpace(request.UserType))
             {
-                return BadRequest(new { error = "All fields must be filled!" });
+                return BadRequest("All fields must be filled!");
             }
 
             var emailPattern = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
 
             if (!Regex.IsMatch(request.Email, emailPattern))
             {
-                return BadRequest(new { error = "Email is not in a valid pattern" });
+                return BadRequest("Email is not in a valid pattern");
             }
             if (request.Phone != null && request.Phone.Length != 9)
             {
-                return BadRequest(new { error = "Phone must have 9 digits!" });
+                return BadRequest("Phone must have 9 digits!");
             }
             if (request.Password.Length < 8)
             {
-                return BadRequest(new { error = "Password is weak, please enter more characters" });
+                return BadRequest("Password is weak, please enter more characters");
             }
             var user = _clientService.RegisterAndGetUser(request.FirstName, request.Password, request.Email, request.LastName, request.Phone, request.UserType);
             if (user == null)
-                return BadRequest(new { error = "Email is already registered" });
+                return BadRequest("Email is already registered");
 
             return Ok(new { UserId = user.UserId });
         }
