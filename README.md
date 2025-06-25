@@ -11,6 +11,7 @@ ULEats es una aplicación de delivery, con frontend en Vue 3 y backend en C# (.N
 - **Estructura**: Monorepo con separación clara de frontend/backend
 
 ## 📁 Estructura del proyecto
+```
 ULEats
 ├── backend
 │   ├── backend
@@ -181,6 +182,7 @@ ULEats
 │   ├── UlEatsDb.cs
 │   └── User.cs
 └── README.md
+```
 ## 🚀 Instalación local
 
 ### Prerrequisitos
