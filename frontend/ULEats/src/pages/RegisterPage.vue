@@ -109,7 +109,6 @@ export default {
         if (text) {
           data = JSON.parse(text);
         }
-        console.log("Respuesta del backend:", data);
         if (data.userId) {
           localStorage.setItem("user_id", data.userId);
         }
