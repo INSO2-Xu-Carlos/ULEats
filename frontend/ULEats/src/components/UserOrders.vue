@@ -25,6 +25,10 @@ const headers = [
 ];
 const orders = ref<any[]>([]);
 
+const baseUrl = import.meta.env.PROD
+  ? 'https://uleats-8xnb.onrender.com'
+  : '/api';
+
 function statusColor(status: string) {
   switch (status) {
     case 'En curso': return 'orange';
@@ -39,7 +43,7 @@ const customerId = localStorage.getItem('customer_id');
 onMounted(async () => {
   if (!customerId) return;
   try {
-    const res = await fetch(`/api/Order/byCustomer/${customerId}`);
+    const res = await fetch(`${baseUrl}/Order/byCustomer/${customerId}`);
     if (res.ok) {
       orders.value = await res.json();
     } else {

@@ -56,7 +56,7 @@ export default {
     };
   },
   created() {
-    const id = this.$route.params.id; // "new" o un número
+    const id = this.$route.params.id;
     const restaurantId = this.$route.query.restaurantId;
     this.restaurantId = restaurantId ? Number(restaurantId) : null;
 
@@ -66,7 +66,6 @@ export default {
       this.loadProductData(this.productId);
     } else {
       this.isEdit = false;
-      // En creación, restaurantId debe estar definido
       if (!this.restaurantId) {
         alert("Falta el restaurantId en la URL");
         this.$router.push("/");
@@ -76,7 +75,12 @@ export default {
   methods: {
     async loadProductData(id) {
       try {
-        const response = await fetch(`/api/Product/${id}`);
+        const baseUrl = import.meta.env.PROD
+        ? 'https://uleats-8xnb.onrender.com'
+        : '/api';
+
+
+        const response = await fetch(`${baseUrl}/Product/${id}`);
         if (!response.ok) throw new Error("Error al cargar producto");
         const data = await response.json();
         this.name = data.name;
@@ -106,13 +110,19 @@ export default {
       try {
         let response;
         if (this.isEdit) {
-          response = await fetch(`/api/Product/${this.productId}`, {
+          const baseUrl = import.meta.env.PROD
+        ? 'https://uleats-8xnb.onrender.com'
+        : '/api';
+          response = await fetch(`${baseUrl}/Product/${this.productId}`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(payload),
           });
         } else {
-          response = await fetch("/api/Product", {
+          const baseUrl = import.meta.env.PROD
+        ? 'https://uleats-8xnb.onrender.com'
+        : '/api';
+          response = await fetch(`${baseUrl}/Product`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(payload),

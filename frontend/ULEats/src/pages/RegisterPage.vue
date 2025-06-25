@@ -88,7 +88,10 @@ export default {
       };
       
       try {
-        const response = await fetch("/api/Client/register", {
+        const baseUrl = import.meta.env.PROD
+        ? 'https://uleats-8xnb.onrender.com'
+        : '/api';
+        const response = await fetch(`${baseUrl}/Client/register`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -101,7 +104,12 @@ export default {
           alert("Error: " + errorText);
           return;
         }
-        const data = await response.json();
+        const text = await response.text();
+        let data = {};
+        if (text) {
+          data = JSON.parse(text);
+        }
+        console.log("Respuesta del backend:", data);
         if (data.userId) {
           localStorage.setItem("user_id", data.userId);
         }

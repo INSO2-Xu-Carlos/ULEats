@@ -57,7 +57,10 @@ export default {
 
     async loadRestaurantData(id) {
       try {
-        const response = await fetch(`/api/Restaurant/${id}`);
+        const baseUrl = import.meta.env.PROD
+        ? 'https://uleats-8xnb.onrender.com'
+        : '/api';
+        const response = await fetch(`${baseUrl}/Restaurant/${id}`);
         if (!response.ok) throw new Error("error");
 
         const data = await response.json();
@@ -82,7 +85,10 @@ export default {
       };
 
       try {
-        const response = await fetch("/api/Restaurant", {
+        const baseUrl = import.meta.env.PROD
+        ? 'https://uleats-8xnb.onrender.com'
+        : '/api';
+        const response = await fetch(`${baseUrl}/Restaurant`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -123,7 +129,10 @@ export default {
       };
 
       try {
-        const response = await fetch(`/api/Restaurant/${this.restaurantId}`, {
+        const baseUrl = import.meta.env.PROD
+        ? 'https://uleats-8xnb.onrender.com'
+        : '/api';
+        const response = await fetch(`${baseUrl}/Restaurant/${this.restaurantId}`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",

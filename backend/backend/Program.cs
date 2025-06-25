@@ -14,6 +14,19 @@ builder.Services.AddScoped<AppDataConnection>(sp =>
 
 });
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend",
+        builder =>
+        {
+            builder.WithOrigins("https://uleats-1.onrender.com")
+                   .AllowAnyHeader()
+                   .AllowAnyMethod();
+        });
+});
+
+
+
 builder.Services.AddScoped<ClientService>();
 builder.Services.AddScoped<RestaurantService>();
 builder.Services.AddScoped<CustomerService>();
@@ -53,5 +66,9 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+app.UseCors("AllowFrontend");
+
+app.MapGet("/", () => "Backend ULEats está activo");
+app.MapGet("/health", () => Results.Ok("Healthy"));
 
 app.Run();
