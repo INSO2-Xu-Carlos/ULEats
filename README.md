@@ -1,6 +1,6 @@
 # ULEats
 
-Aplicación web moderna con frontend en Vue 3 y backend en C# (.NET), desplegada en Render.
+ULEats es una aplicación de delivery, con frontend en Vue 3 y backend en C# (.NET), desplegada en Render.
 
 ## 🛠️ Tecnologías
 
@@ -190,7 +190,6 @@ ULEats
 
 ### Configuración inicial
 
-```bash
 git clone https://github.com/INSO2-Xu-Carlos/ULEats.git
 cd ULEats
 
@@ -200,7 +199,13 @@ npm install
 npm run dev
 
 Backend
-Desde Visual Studio 2022
+Desde Visual Studio 2022 se abre el archivo backend.sln en la ruta /backend/backend y ejecutamos en IIS Express
 
-### Despliegue
-El proyecto está configurado para desplegarse en Render
+## Despliegue
+El proyecto está configurado para desplegarse en Render.
+URL de la Pagina web 
+https://uleats-1.onrender.com
+
+### Notas 
+Asegurarse en todo momento que el backend este "despierto" 
+https://uleats-8xnb.onrender.com 
