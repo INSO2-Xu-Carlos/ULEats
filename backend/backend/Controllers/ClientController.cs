@@ -15,12 +15,7 @@ namespace backend.Controllers
     {
 
         private readonly ClientService _clientService;
-        //private readonly ILogger<ClientController> _logger;
-
-        public ClientController(ClientService clientService)
-        {
-            _clientService = clientService;
-        }
+        public ClientController(ClientService clientService) => _clientService = clientService;
 
         [HttpPost("login")]
         public IActionResult Login([FromBody] LoginRequest request)
