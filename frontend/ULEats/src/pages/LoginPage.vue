@@ -48,7 +48,6 @@ export default {
         }
 
         const data = await response.json();
-        console.log("Respuesta del backend:", data);
 
         if (data.userId) {
           localStorage.setItem("user_id", data.userId);

@@ -81,7 +81,6 @@ export default {
         actualDeliveryTime: new Date().toISOString(),
         specialInstructions: "",
       };
-      console.log(orderPayload);
       
       const orderResponse = await fetch("/api/Order", {
         method: "POST",
@@ -115,7 +114,6 @@ export default {
     fetch(`/api/Customer/${customerId}`)
       .then(res => res.ok ? res.json() : {})
       .then(data => {
-        console.log("Datos del customer:", data);
         this.savedAddress = data.address || "";
         this.selectedAddress = data.address || "";
       })
